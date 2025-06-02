@@ -1,0 +1,46 @@
+main {
+  width: 100vw;
+  height: 100vh;
+  padding: 24px;
+  background-color: floralwhite;
+  display: flex;
+  justify-content: center;
+}
+
+main[id="home"] > .container {
+  width: 100vw;
+  max-width: 1280px;
+}
+
+.widgets {
+  display: flex;
+  flex-direction: column;
+  max-width: 320px;
+  background-color: #fff;
+  border-radius: 20px;
+}
+
+.widget {
+  padding: 16px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+#username {
+  font-size: 32px;
+  line-height: 36px;
+  font-weight: 500;
+}
+
+.user_widget {
+  align-items: flex-start;
+}
+
+.enterRoom_widget {
+  gap: 8px;
+}
+
+.enterRoom_widget > span {
+  text-align: center;
+}
