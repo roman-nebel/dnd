@@ -14,11 +14,8 @@ type DragSource = DragBaseElement
 // Define the context type
 interface DragAndDropContextType {
   draggableObject: any | null
-  setDraggableObject: (object: any | null) => void
   source: any | null
-  setSource: (source: any | null) => void
   target: any | null
-  setTarget: (target: any | null) => void
   isDragging: boolean // Computed property
   dragStartHandler: (element: DragElement, source: DragSource) => void
   dragEndHandler: () => void
@@ -78,11 +75,8 @@ export const DragAndDropProvider: React.FC<DragAndDropProviderProps> = ({
     <DragAndDropContext.Provider
       value={{
         draggableObject,
-        setDraggableObject,
         source,
-        setSource,
         target,
-        setTarget,
         isDragging,
         dragStartHandler,
         dragEndHandler,
