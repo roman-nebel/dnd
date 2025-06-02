@@ -19,6 +19,7 @@ export default function DragArea1({
         e.currentTarget.style.backgroundColor = '#e0f7fa'
         dragOverHandler({
           id: dragAreaId,
+          droppableTypes: ['goal2'],
           ref: ref.current,
         })
       }}

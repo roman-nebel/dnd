@@ -5,18 +5,16 @@ type DragBaseElement = {
   ref?: HTMLDivElement | null
 }
 
-type DragElement = DragBaseElement
-
-type DragTarget = DragBaseElement
-
+type DragElement = DragBaseElement & { type: string }
 type DragSource = DragBaseElement
+type DragTarget = DragBaseElement & { droppableTypes?: string[] }
 
 // Define the context type
 interface DragAndDropContextType {
-  draggableObject: any | null
-  source: any | null
-  target: any | null
-  isDragging: boolean // Computed property
+  draggableObject: DragElement | null
+  source: DragSource | null
+  target: DragTarget | null
+  isDragging: boolean
   dragStartHandler: (element: DragElement, source: DragSource) => void
   dragEndHandler: () => void
   dragOverHandler: (target: DragTarget) => void
@@ -63,6 +61,13 @@ export const DragAndDropProvider: React.FC<DragAndDropProviderProps> = ({
 
   function dragOverHandler(target: DragTarget) {
     console.log('Drag over')
+    if (
+      !target.droppableTypes ||
+      !target.droppableTypes.includes(draggableObject?.type)
+    ) {
+      console.warn('Invalid drop target for the current draggable type.')
+      return
+    }
     setTarget(target)
   }
 

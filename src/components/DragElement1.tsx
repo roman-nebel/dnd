@@ -10,7 +10,7 @@ export default function DragElement1({ dragSourceId, draggableId }: any) {
       draggable={true}
       onDragStart={() =>
         dragStartHandler(
-          { id: draggableId, ref: ref.current },
+          { id: draggableId, type: 'goal', ref: ref.current },
           { id: dragSourceId }
         )
       }
