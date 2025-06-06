@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { useDragAndDrop } from '../providers/DragAndDrop'
+import { useDragAndDrop, useDragAndDropEvents } from '../providers/DragAndDrop'
 
 export default function DragArea1({
   children,
@@ -8,18 +8,19 @@ export default function DragArea1({
   dragAreaId: string
   children?: React.ReactNode
 }) {
-  const { dragOverHandler, dragLeaveHandler, canBeDropped, readyToDrop } =
-    useDragAndDrop()
   const ref = useRef<HTMLDivElement>(null)
   const droppableContainer = {
     id: dragAreaId,
     droppableTypes: ['goal'],
     ref: ref.current,
   }
+  const { dragOverHandler, dragLeaveHandler } = useDragAndDrop()
+
+  const { canBeDropped, readyToDrop } = useDragAndDropEvents(droppableContainer)
   return (
     <div
       ref={ref}
-      className={`dropzone ${canBeDropped(droppableContainer) ? 'highlight' : ''} ${readyToDrop(droppableContainer) ? 'ready' : ''}`}
+      className={`dropzone ${canBeDropped ? 'highlight' : ''} ${readyToDrop ? 'ready' : ''}`}
       onDragOver={(e) => {
         e.preventDefault()
         e.currentTarget.style.backgroundColor = '#e0f7fa'
