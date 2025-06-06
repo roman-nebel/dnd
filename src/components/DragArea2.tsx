@@ -13,7 +13,7 @@ export default function DragArea1({
   const ref = useRef<HTMLDivElement>(null)
   const droppableContainer = {
     id: dragAreaId,
-    droppableTypes: ['goal'],
+    droppableTypes: ['goal2'],
     ref: ref.current,
   }
   return (
@@ -23,11 +23,7 @@ export default function DragArea1({
       onDragOver={(e) => {
         e.preventDefault()
         e.currentTarget.style.backgroundColor = '#e0f7fa'
-        dragOverHandler({
-          id: dragAreaId,
-          droppableTypes: ['goal'],
-          ref: ref.current,
-        })
+        dragOverHandler(droppableContainer)
       }}
       onDragLeave={(e) => {
         e.currentTarget.style.backgroundColor = '#fff'

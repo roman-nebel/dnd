@@ -15,6 +15,8 @@ interface DragAndDropContextType {
   source: DragSource | null
   target: DragTarget | null
   isDragging: boolean
+  canBeDropped: (container: DragTarget) => boolean
+  readyToDrop: (container: DragTarget) => boolean
   dragStartHandler: (element: DragElement, source: DragSource) => void
   dragEndHandler: () => void
   dragOverHandler: (target: DragTarget) => void
@@ -39,6 +41,24 @@ export const DragAndDropProvider: React.FC<DragAndDropProviderProps> = ({
   const [target, setTarget] = useState<any | null>(null)
 
   const isDragging = draggableObject !== null // Compute dragging state
+
+  function canBeDropped(container: DragTarget): boolean {
+    if (!draggableObject || !container.droppableTypes) {
+      return false
+    }
+    return container.droppableTypes.includes(draggableObject.type)
+  }
+
+  function readyToDrop(container: DragTarget): boolean {
+    if (!draggableObject || !container.droppableTypes) {
+      return false
+    }
+    return (
+      isDragging &&
+      container.droppableTypes.includes(draggableObject.type) &&
+      target?.id === container.id
+    )
+  }
 
   function dragStartHandler(element: DragElement, source: DragSource) {
     console.log('Drag started')
@@ -83,6 +103,8 @@ export const DragAndDropProvider: React.FC<DragAndDropProviderProps> = ({
         source,
         target,
         isDragging,
+        canBeDropped,
+        readyToDrop,
         dragStartHandler,
         dragEndHandler,
         dragOverHandler,
