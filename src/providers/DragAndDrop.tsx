@@ -40,7 +40,7 @@ export const DragAndDropProvider: React.FC<DragAndDropProviderProps> = ({
   const [source, setSource] = useState<any | null>(null)
   const [target, setTarget] = useState<any | null>(null)
 
-  const isDragging = draggableObject !== null // Compute dragging state
+  const isDragging = draggableObject !== null
 
   function canBeDropped(container: DragTarget): boolean {
     if (!draggableObject || !container.droppableTypes) {
