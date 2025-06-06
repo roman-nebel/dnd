@@ -23,9 +23,8 @@ interface DragAndDropContextType {
   isDragging: boolean
   dragStartHandler: (element: DragElement, source: DragSource) => void
   dragEndHandler: () => void
-  dragOverHandler: (target: DragTarget) => void
+  dragEnterHandler: (target: DragTarget) => void
   dragLeaveHandler: () => void
-  subscribe: (callback: () => void) => () => void
 }
 
 // Create the context
@@ -56,22 +55,18 @@ export const DragAndDropProvider: React.FC<DragAndDropProviderProps> = ({
 
   function dragEndHandler() {
     console.log('Drag ended')
-    if (!data.draggableObject || !data.target) {
-      console.warn('No draggable object or target to drop into.')
-      return
+    if (data.draggableObject && data.target) {
+      data.target.ref.appendChild(data.draggableObject.ref)
     }
-
-    data.target.ref.appendChild(data.draggableObject.ref)
     updateData({ draggableObject: null, source: null, target: null })
   }
 
-  function dragOverHandler(target: DragTarget) {
-    console.log('Drag over')
+  function dragEnterHandler(target: DragTarget) {
+    console.log('Drag enter')
     if (
       !target.droppableTypes ||
       !target.droppableTypes.includes(data.draggableObject?.type)
     ) {
-      console.warn('Invalid drop target for the current draggable type.')
       return
     }
     updateData({ target })
@@ -89,7 +84,7 @@ export const DragAndDropProvider: React.FC<DragAndDropProviderProps> = ({
         isDragging,
         dragStartHandler,
         dragEndHandler,
-        dragOverHandler,
+        dragEnterHandler,
         dragLeaveHandler,
       }}
     >
@@ -115,24 +110,20 @@ export function useDragAndDropEvents(instanceData: any) {
   const { isDragging, draggableObject, target } = useDragAndDrop()
 
   useEffect(() => {
-    console.log('Checking if can be dropped', {
-      draggableObject,
-      instanceData,
-    })
     const canBeDropped = Boolean(
       draggableObject &&
         instanceData.droppableTypes &&
-        instanceData.droppableTypes.includes(draggableObject.type)
+        instanceData.droppableTypes.includes(draggableObject?.type)
     )
     setState({ ...state, canBeDropped })
-  }, [draggableObject])
+  }, [isDragging])
 
   useEffect(() => {
     const readyToDrop = Boolean(
       draggableObject &&
         instanceData.droppableTypes &&
         isDragging &&
-        instanceData.droppableTypes.includes(draggableObject.type) &&
+        instanceData.droppableTypes.includes(draggableObject?.type) &&
         target?.id === instanceData.id
     )
     setState({ ...state, readyToDrop })
