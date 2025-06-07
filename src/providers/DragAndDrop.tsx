@@ -108,11 +108,10 @@ export function useDragContainer(instanceData: any) {
 
   useEffect(() => {
     const readyToDrop = Boolean(
-      draggableObject &&
-        target &&
-        target.droppableTypes &&
+      draggableObject?.type &&
+        target?.droppableTypes &&
         target.droppableTypes.includes(draggableObject?.type) &&
-        target?.id === instanceData.id
+        target?.id === instanceData?.id
     )
     updateState({ readyToDrop })
   }, [target])
@@ -120,13 +119,6 @@ export function useDragContainer(instanceData: any) {
   function dragEnterHandler() {
     setTimeout(() => {
       console.log('Drag enter')
-      if (
-        !instanceData.droppableTypes ||
-        !instanceData.droppableTypes.includes(draggableObject?.type || '')
-      ) {
-        return
-      }
-
       updateData({ target: instanceData })
     }, 16)
   }
