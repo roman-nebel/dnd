@@ -7,7 +7,7 @@ interface DropContainerProps {
   droppableTypes?: string[]
   onDragEnter?: (event: React.DragEvent<HTMLDivElement>) => void
   onDragLeave?: (event: React.DragEvent<HTMLDivElement>) => void
-  onDrop?: (event: React.DragEvent<HTMLDivElement>) => void
+  onDrop?: (canBeDropped: boolean) => void
   children?: React.ReactNode
 }
 
@@ -55,7 +55,7 @@ export default React.forwardRef<HTMLDivElement, DropContainerProps>(
         }}
         onDrop={(e: React.DragEvent<HTMLDivElement>) => {
           e && e.preventDefault()
-          onDrop && onDrop(e)
+          onDrop && onDrop(canBeDropped)
           dropHandler()
         }}
       >

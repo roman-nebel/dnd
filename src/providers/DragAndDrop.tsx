@@ -133,13 +133,6 @@ export function useDragContainer(instanceData: any) {
   }
 
   function dropHandler() {
-    if (
-      state.canBeDropped &&
-      draggableObject?.ref?.current &&
-      target?.ref?.current
-    ) {
-      target.ref.current.appendChild(draggableObject.ref.current)
-    }
     updateData({ draggableObject: null, source: null, target: null })
   }
 
