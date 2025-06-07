@@ -17,15 +17,30 @@ export default function DragArea1({
     ref: ref.current,
   }
 
-  const { canBeDropped, readyToDrop, dragEnterHandler } =
-    useDragContainer(droppableContainer)
+  const {
+    canBeDropped,
+    readyToDrop,
+    dragEnterHandler,
+    dragOverHandler,
+    dropHandler,
+    dragLeaveHandler,
+  } = useDragContainer(droppableContainer)
+
   return (
     <div
       ref={ref}
       className={`dropzone${canBeDropped ? ' highlight' : ''}${readyToDrop ? ' ready' : ''}`}
       onDragEnter={(e) => {
         e.preventDefault()
-        dragEnterHandler(droppableContainer)
+        dragEnterHandler()
+      }}
+      onDragOver={dragOverHandler}
+      onDragLeave={(e) => {
+        dragLeaveHandler()
+      }}
+      onDrop={(e) => {
+        e.preventDefault()
+        dropHandler()
       }}
     >
       {children}

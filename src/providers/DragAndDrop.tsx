@@ -109,34 +109,30 @@ export function useDragContainer(instanceData: any) {
   useEffect(() => {
     const readyToDrop = Boolean(
       draggableObject &&
-        instanceData.droppableTypes &&
-        instanceData.droppableTypes.includes(draggableObject?.type) &&
+        target &&
+        target.droppableTypes &&
+        target.droppableTypes.includes(draggableObject?.type) &&
         target?.id === instanceData.id
     )
     updateState({ readyToDrop })
   }, [target])
 
-  function dragEnterHandler(target: DragTarget) {
+  function dragEnterHandler() {
     setTimeout(() => {
       console.log('Drag enter')
-      if (target?.ref) {
-        target.ref.ondragover = (e) => e.preventDefault()
-        target.ref.ondrop = (e) => {
-          e.preventDefault()
-          dropHandler()
-        }
-        target.ref.ondragleave = () => {
-          dragLeaveHandler()
-        }
-      }
       if (
-        !target.droppableTypes ||
-        !target.droppableTypes.includes(draggableObject?.type || '')
+        !instanceData.droppableTypes ||
+        !instanceData.droppableTypes.includes(draggableObject?.type || '')
       ) {
         return
       }
-      updateData({ target })
+
+      updateData({ target: instanceData })
     }, 16)
+  }
+
+  function dragOverHandler(e: React.DragEvent<HTMLDivElement>) {
+    e.preventDefault()
   }
 
   function dragLeaveHandler() {
@@ -155,6 +151,7 @@ export function useDragContainer(instanceData: any) {
   return {
     ...state,
     dragEnterHandler,
+    dragOverHandler,
     dragLeaveHandler,
     dropHandler,
   }
