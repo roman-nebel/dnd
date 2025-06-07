@@ -1,7 +1,17 @@
 import React from 'react'
 import { useDragContainer } from './DragAndDrop'
 
-export default React.forwardRef(
+interface DropContainerProps {
+  className?: string
+  dropAreaId: string
+  droppableTypes?: string[]
+  onDragEnter?: (event: React.DragEvent<HTMLDivElement>) => void
+  onDragLeave?: (event: React.DragEvent<HTMLDivElement>) => void
+  onDrop?: (event: React.DragEvent<HTMLDivElement>) => void
+  children?: React.ReactNode
+}
+
+export default React.forwardRef<HTMLDivElement, DropContainerProps>(
   (
     {
       className,
@@ -11,7 +21,7 @@ export default React.forwardRef(
       onDragLeave,
       onDrop,
       children,
-    }: any,
+    }: DropContainerProps,
     ref: React.ForwardedRef<HTMLDivElement>
   ) => {
     const droppableContainer = {

@@ -1,7 +1,16 @@
 import { useDragElement } from './DragAndDrop'
 import React from 'react'
 
-export default React.forwardRef(
+interface DragElementProps {
+  className?: string
+  dragElementId: string
+  dragSourceId: string
+  dragElementType: string
+  onDragStart?: (event: React.DragEvent<HTMLDivElement>) => void
+  children: React.ReactNode
+}
+
+export default React.forwardRef<HTMLDivElement, DragElementProps>(
   (
     {
       className,
@@ -10,7 +19,7 @@ export default React.forwardRef(
       dragElementType,
       onDragStart,
       children,
-    }: any,
+    }: DragElementProps,
     ref: React.ForwardedRef<HTMLDivElement>
   ) => {
     const { dragStartHandler } = useDragElement({
