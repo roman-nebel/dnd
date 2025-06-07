@@ -20,11 +20,7 @@ interface DragAndDropContextType {
   draggableObject: DragElement | null
   source: DragSource | null
   target: DragTarget | null
-  isDragging: boolean
-  dragStartHandler: (element: DragElement, source: DragSource) => void
-  dragEndHandler: () => void
-  dragEnterHandler: (target: DragTarget) => void
-  dragLeaveHandler: () => void
+  updateData: (newData: Partial<DragAndDropContextType>) => void
 }
 
 // Create the context
@@ -43,49 +39,16 @@ export const DragAndDropProvider: React.FC<DragAndDropProviderProps> = ({
   const [data, setData] = useState<any | null>({})
 
   function updateData(newData: any) {
-    setData({ ...data, ...newData })
-  }
-
-  const isDragging = data.draggableObject !== null
-
-  function dragStartHandler(element: DragElement, source: DragSource) {
-    console.log('Drag started')
-    updateData({ draggableObject: element, source: source })
-  }
-
-  function dragEndHandler() {
-    console.log('Drag ended')
-    if (data.draggableObject && data.target) {
-      data.target.ref.appendChild(data.draggableObject.ref)
-    }
-    updateData({ draggableObject: null, source: null, target: null })
-  }
-
-  function dragEnterHandler(target: DragTarget) {
-    console.log('Drag enter')
-    if (
-      !target.droppableTypes ||
-      !target.droppableTypes.includes(data.draggableObject?.type)
-    ) {
-      return
-    }
-    updateData({ target })
-  }
-
-  function dragLeaveHandler() {
-    console.log('Drag left')
-    updateData({ target: null })
+    setData((prev: typeof data) => {
+      return { ...prev, ...newData }
+    })
   }
 
   return (
     <DragAndDropContext.Provider
       value={{
         ...data,
-        isDragging,
-        dragStartHandler,
-        dragEndHandler,
-        dragEnterHandler,
-        dragLeaveHandler,
+        updateData,
       }}
     >
       {children}
@@ -102,12 +65,37 @@ export const useDragAndDrop = (): DragAndDropContextType => {
   return context
 }
 
-export function useDragAndDropEvents(instanceData: any) {
+export function useDragElement(instanceData: any) {
+  const { draggableObject, updateData } = useDragAndDrop()
+  const isDragging = Boolean(draggableObject)
+
+  function dragStartHandler(source: DragSource) {
+    console.log('Drag started')
+    if (instanceData?.ref) {
+      instanceData.ref.ondragend = () =>
+        updateData({ draggableObject: null, source: null, target: null })
+    }
+    updateData({ draggableObject: instanceData, source: source })
+  }
+
+  return {
+    isDragging,
+    dragStartHandler,
+  }
+}
+
+export function useDragContainer(instanceData: any) {
   const [state, setState] = useState({
     canBeDropped: false,
     readyToDrop: false,
   })
-  const { isDragging, draggableObject, target } = useDragAndDrop()
+  const { draggableObject, target, updateData } = useDragAndDrop()
+
+  function updateState(newState: any) {
+    setState((prev: any) => {
+      return { ...prev, ...newState }
+    })
+  }
 
   useEffect(() => {
     const canBeDropped = Boolean(
@@ -115,19 +103,59 @@ export function useDragAndDropEvents(instanceData: any) {
         instanceData.droppableTypes &&
         instanceData.droppableTypes.includes(draggableObject?.type)
     )
-    setState({ ...state, canBeDropped })
-  }, [isDragging])
+    updateState({ canBeDropped })
+  }, [draggableObject])
 
   useEffect(() => {
     const readyToDrop = Boolean(
       draggableObject &&
         instanceData.droppableTypes &&
-        isDragging &&
         instanceData.droppableTypes.includes(draggableObject?.type) &&
         target?.id === instanceData.id
     )
-    setState({ ...state, readyToDrop })
+    updateState({ readyToDrop })
   }, [target])
 
-  return state
+  function dragEnterHandler(target: DragTarget) {
+    setTimeout(() => {
+      console.log('Drag enter')
+      if (target?.ref) {
+        target.ref.ondragover = (e) => e.preventDefault()
+        target.ref.ondrop = (e) => {
+          e.preventDefault()
+          dropHandler()
+        }
+        target.ref.ondragleave = () => {
+          dragLeaveHandler()
+        }
+      }
+      if (
+        !target.droppableTypes ||
+        !target.droppableTypes.includes(draggableObject?.type || '')
+      ) {
+        return
+      }
+      updateData({ target })
+    }, 16)
+  }
+
+  function dragLeaveHandler() {
+    console.log('Drag left')
+    updateData({ target: null })
+  }
+
+  function dropHandler() {
+    console.log('Drop!')
+    if (draggableObject?.ref && target?.ref) {
+      target.ref.appendChild(draggableObject.ref)
+    }
+    updateData({ draggableObject: null, source: null, target: null })
+  }
+
+  return {
+    ...state,
+    dragEnterHandler,
+    dragLeaveHandler,
+    dropHandler,
+  }
 }

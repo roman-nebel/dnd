@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { useDragAndDrop, useDragAndDropEvents } from '../providers/DragAndDrop'
+import { useDragContainer } from '../providers/DragAndDrop'
 
 import './DragArea.css'
 
@@ -16,19 +16,16 @@ export default function DragArea1({
     droppableTypes: ['goal2'],
     ref: ref.current,
   }
-  const { dragEnterHandler, dragLeaveHandler } = useDragAndDrop()
 
-  const { canBeDropped, readyToDrop } = useDragAndDropEvents(droppableContainer)
+  const { canBeDropped, readyToDrop, dragEnterHandler } =
+    useDragContainer(droppableContainer)
   return (
     <div
       ref={ref}
       className={`dropzone${canBeDropped ? ' highlight' : ''}${readyToDrop ? ' ready' : ''}`}
-      onDragOver={(e) => {
+      onDragEnter={(e) => {
         e.preventDefault()
         dragEnterHandler(droppableContainer)
-      }}
-      onDragLeave={(e) => {
-        dragLeaveHandler()
       }}
     >
       {children}
