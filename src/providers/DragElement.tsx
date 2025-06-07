@@ -24,7 +24,6 @@ export default React.forwardRef(
         className={className}
         draggable={true}
         onDragStart={(e) => {
-          e.dataTransfer.setData('text/plain', 'someData')
           onDragStart && onDragStart(e)
           dragStartHandler({ id: dragSourceId })
         }}
