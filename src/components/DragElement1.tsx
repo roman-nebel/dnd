@@ -1,28 +1,16 @@
 import { useRef } from 'react'
-import { useDragElement } from '../providers/DragAndDrop'
+import DragElement from './DragElement'
 
 export default function DragElement1({ dragSourceId, draggableId }: any) {
   const ref = useRef<HTMLDivElement>(null)
-  const { dragStartHandler } = useDragElement({
-    id: draggableId,
-    type: 'goal',
-    ref,
-  })
   return (
-    <p
+    <DragElement
       ref={ref}
-      draggable={true}
-      onDragStart={(e) => {
-        e.dataTransfer.setData('text/plain', 'someData')
-        dragStartHandler({ id: dragSourceId })
-      }}
-      style={{
-        cursor: 'grab',
-        backgroundColor: '#f0f0f0',
-        userSelect: 'none',
-      }}
+      dragElementId={draggableId}
+      type="goal"
+      dragSourceId={dragSourceId}
     >
       Drag me!
-    </p>
+    </DragElement>
   )
 }
