@@ -1,7 +1,7 @@
 import { useRef } from 'react'
-import { useDragContainer } from '../providers/DragAndDrop'
 
 import './DragArea.css'
+import DragContainer from './DragContainer'
 
 export default function DragArea1({
   children,
@@ -11,31 +11,10 @@ export default function DragArea1({
   children?: React.ReactNode
 }) {
   const ref = useRef<HTMLDivElement>(null)
-  const droppableContainer = {
-    id: dragAreaId,
-    droppableTypes: ['goal2'],
-    ref: ref.current,
-  }
-
-  const {
-    canBeDropped,
-    readyToDrop,
-    dragEnterHandler,
-    dragOverHandler,
-    dropHandler,
-    dragLeaveHandler,
-  } = useDragContainer(droppableContainer)
 
   return (
-    <div
-      ref={ref}
-      className={`dropzone${canBeDropped ? ' highlight' : ''}${readyToDrop ? ' ready' : ''}`}
-      onDragEnter={dragEnterHandler}
-      onDragOver={dragOverHandler}
-      onDragLeave={dragLeaveHandler}
-      onDrop={dropHandler}
-    >
+    <DragContainer ref={ref} dragAreaId={dragAreaId} droppableTypes={['goal2']}>
       {children}
-    </div>
+    </DragContainer>
   )
 }

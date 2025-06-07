@@ -8,12 +8,12 @@
     background-color 0.3s;
 }
 
-.dropzone.highlight {
+.dropzone._highlight {
   border: 2px dashed #4a90e2;
   background-color: rgba(74, 144, 226, 0.1);
 }
 
-.dropzone.ready {
+.dropzone._ready {
   border-color: #4caf50;
   background-color: rgba(76, 175, 80, 0.1);
 }

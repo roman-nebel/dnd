@@ -8,7 +8,7 @@ import React, {
 
 type DragBaseElement = {
   id: string
-  ref?: HTMLDivElement | null
+  ref?: React.RefObject<HTMLDivElement> | null
 }
 
 type DragElement = DragBaseElement & { type: string }
@@ -72,14 +72,14 @@ export function useDragElement(instanceData: any) {
   const { updateData } = useDragAndDrop()
 
   function dragStartHandler(source: DragSource) {
-    if (!instanceData?.ref?.current) {
+    if (!instanceData?.ref) {
       return
     }
 
     updateData({
       draggableObject: {
         ...instanceData,
-        ref: instanceData.ref.current,
+        ref: instanceData.ref,
       },
       source: source,
     })
@@ -122,26 +122,23 @@ export function useDragContainer(instanceData: any) {
     updateState({ readyToDrop })
   }, [target])
 
-  function dragEnterHandler(e: React.DragEvent<HTMLDivElement>) {
-    e && e.preventDefault()
+  function dragEnterHandler() {
     setTimeout(() => {
       updateData({ target: instanceData })
     }, 16)
   }
 
-  function dragOverHandler(e: React.DragEvent<HTMLDivElement>) {
-    e && e.preventDefault()
-  }
-
-  function dragLeaveHandler(e: React.DragEvent<HTMLDivElement>) {
-    e && e.preventDefault()
+  function dragLeaveHandler() {
     updateData({ target: null })
   }
 
-  function dropHandler(e: React.DragEvent<HTMLDivElement>) {
-    e && e.preventDefault()
-    if (state.canBeDropped && draggableObject?.ref && target?.ref) {
-      target.ref.appendChild(draggableObject.ref)
+  function dropHandler() {
+    if (
+      state.canBeDropped &&
+      draggableObject?.ref?.current &&
+      target?.ref?.current
+    ) {
+      target.ref.current.appendChild(draggableObject.ref.current)
     }
     updateData({ draggableObject: null, source: null, target: null })
   }
@@ -149,7 +146,6 @@ export function useDragContainer(instanceData: any) {
   return {
     ...state,
     dragEnterHandler,
-    dragOverHandler,
     dragLeaveHandler,
     dropHandler,
   }
