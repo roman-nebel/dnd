@@ -122,21 +122,24 @@ export function useDragContainer(instanceData: any) {
     updateState({ readyToDrop })
   }, [target])
 
-  function dragEnterHandler() {
+  function dragEnterHandler(e: React.DragEvent<HTMLDivElement>) {
+    e && e.preventDefault()
     setTimeout(() => {
       updateData({ target: instanceData })
     }, 16)
   }
 
   function dragOverHandler(e: React.DragEvent<HTMLDivElement>) {
-    e.preventDefault()
+    e && e.preventDefault()
   }
 
-  function dragLeaveHandler() {
+  function dragLeaveHandler(e: React.DragEvent<HTMLDivElement>) {
+    e && e.preventDefault()
     updateData({ target: null })
   }
 
-  function dropHandler() {
+  function dropHandler(e: React.DragEvent<HTMLDivElement>) {
+    e && e.preventDefault()
     if (state.canBeDropped && draggableObject?.ref && target?.ref) {
       target.ref.appendChild(draggableObject.ref)
     }

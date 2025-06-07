@@ -30,18 +30,10 @@ export default function DragArea1({
     <div
       ref={ref}
       className={`dropzone${canBeDropped ? ' highlight' : ''}${readyToDrop ? ' ready' : ''}`}
-      onDragEnter={(e) => {
-        e.preventDefault()
-        dragEnterHandler()
-      }}
+      onDragEnter={dragEnterHandler}
       onDragOver={dragOverHandler}
-      onDragLeave={(e) => {
-        dragLeaveHandler()
-      }}
-      onDrop={(e) => {
-        e.preventDefault()
-        dropHandler()
-      }}
+      onDragLeave={dragLeaveHandler}
+      onDrop={dropHandler}
     >
       {children}
     </div>
