@@ -1,4 +1,4 @@
-import { useDragElement } from '../providers/DragAndDrop'
+import { useDragElement } from './DragAndDrop'
 import React from 'react'
 
 export default React.forwardRef(
@@ -7,7 +7,7 @@ export default React.forwardRef(
       className,
       dragElementId,
       dragSourceId,
-      type,
+      dragElementType,
       onDragStart,
       children,
     }: any,
@@ -15,7 +15,7 @@ export default React.forwardRef(
   ) => {
     const { dragStartHandler } = useDragElement({
       id: dragElementId,
-      type,
+      type: dragElementType,
       ref,
     })
     return (

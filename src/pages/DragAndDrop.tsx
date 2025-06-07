@@ -16,11 +16,14 @@ export default function DragAndDrop() {
           )
         </i>
       </p>
-      <DragArea1 dragAreaId="area1">
-        <DragElement1 draggableId={'el'} dragSourceId={'area1'}></DragElement1>
+      <DragArea1 dropAreaId="area1">
+        <DragElement1
+          dragElementId={'el'}
+          dragSourceId={'area1'}
+        ></DragElement1>
       </DragArea1>
-      <DragArea1 dragAreaId="area2"></DragArea1>
-      <DragArea2 dragAreaId="area3"></DragArea2>
+      <DragArea1 dropAreaId="area2"></DragArea1>
+      <DragArea2 dropAreaId="area3"></DragArea2>
     </div>
   )
 }

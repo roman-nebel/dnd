@@ -1,11 +1,11 @@
 import React from 'react'
-import { useDragContainer } from '../providers/DragAndDrop'
+import { useDragContainer } from './DragAndDrop'
 
 export default React.forwardRef(
   (
     {
       className,
-      dragAreaId,
+      dropAreaId,
       droppableTypes,
       onDragEnter,
       onDragLeave,
@@ -15,7 +15,7 @@ export default React.forwardRef(
     ref: React.ForwardedRef<HTMLDivElement>
   ) => {
     const droppableContainer = {
-      id: dragAreaId,
+      id: dropAreaId,
       droppableTypes: droppableTypes || [],
       ref: ref,
     }

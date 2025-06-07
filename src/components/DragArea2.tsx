@@ -1,19 +1,19 @@
 import { useRef } from 'react'
 
 import './DragArea.css'
-import DragContainer from './DragContainer'
+import DragContainer from '../providers/DropContainer'
 
 export default function DragArea1({
   children,
-  dragAreaId,
+  dropAreaId,
 }: {
-  dragAreaId: string
+  dropAreaId: string
   children?: React.ReactNode
 }) {
   const ref = useRef<HTMLDivElement>(null)
 
   return (
-    <DragContainer ref={ref} dragAreaId={dragAreaId} droppableTypes={['goal2']}>
+    <DragContainer ref={ref} dropAreaId={dropAreaId} droppableTypes={['goal2']}>
       {children}
     </DragContainer>
   )

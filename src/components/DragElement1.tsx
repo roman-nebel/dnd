@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import DragElement from './DragElement'
+import DragElement from '../providers/DragElement'
 
 export default function DragElement1({ dragSourceId, draggableId }: any) {
   const ref = useRef<HTMLDivElement>(null)
@@ -7,7 +7,7 @@ export default function DragElement1({ dragSourceId, draggableId }: any) {
     <DragElement
       ref={ref}
       dragElementId={draggableId}
-      type="goal"
+      dragElementType="goal"
       dragSourceId={dragSourceId}
     >
       Drag me!
