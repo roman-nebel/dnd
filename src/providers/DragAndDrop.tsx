@@ -12,8 +12,11 @@ type DragBaseElement = {
 }
 
 type DragElement = DragBaseElement & { type: string }
-type DragSource = DragBaseElement
-type DragTarget = DragBaseElement & { droppableTypes?: string[] }
+type DragSource = DragBaseElement & { availableActions?: string[] }
+type DragTarget = DragBaseElement & {
+  droppableTypes?: string[]
+  availableActions?: string[]
+}
 
 // Define the context type
 interface DragAndDropContextType {
