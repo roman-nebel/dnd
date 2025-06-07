@@ -6,7 +6,7 @@ export default function DragElement1({ dragSourceId, draggableId }: any) {
   const { dragStartHandler } = useDragElement({
     id: draggableId,
     type: 'goal',
-    ref: ref.current,
+    ref, // Передача самого ref, а не ref.current
   })
   return (
     <p

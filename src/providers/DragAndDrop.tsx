@@ -66,20 +66,23 @@ export const useDragAndDrop = (): DragAndDropContextType => {
 }
 
 export function useDragElement(instanceData: any) {
-  const { draggableObject, updateData } = useDragAndDrop()
-  const isDragging = Boolean(draggableObject)
+  const { updateData } = useDragAndDrop()
 
   function dragStartHandler(source: DragSource) {
-    console.log('Drag started')
-    if (instanceData?.ref) {
-      instanceData.ref.ondragend = () =>
-        updateData({ draggableObject: null, source: null, target: null })
+    if (!instanceData?.ref?.current) {
+      return
     }
-    updateData({ draggableObject: instanceData, source: source })
+
+    updateData({
+      draggableObject: {
+        ...instanceData,
+        ref: instanceData.ref.current,
+      },
+      source: source,
+    })
   }
 
   return {
-    isDragging,
     dragStartHandler,
   }
 }
@@ -118,7 +121,6 @@ export function useDragContainer(instanceData: any) {
 
   function dragEnterHandler() {
     setTimeout(() => {
-      console.log('Drag enter')
       updateData({ target: instanceData })
     }, 16)
   }
@@ -128,13 +130,11 @@ export function useDragContainer(instanceData: any) {
   }
 
   function dragLeaveHandler() {
-    console.log('Drag left')
     updateData({ target: null })
   }
 
   function dropHandler() {
-    console.log('Drop!')
-    if (draggableObject?.ref && target?.ref) {
+    if (state.canBeDropped && draggableObject?.ref && target?.ref) {
       target.ref.appendChild(draggableObject.ref)
     }
     updateData({ draggableObject: null, source: null, target: null })
