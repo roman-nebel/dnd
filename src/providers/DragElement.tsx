@@ -1,5 +1,5 @@
 import { useDragElement } from './DragAndDrop'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 interface DragElementProps {
   className?: string
@@ -36,14 +36,10 @@ export default React.forwardRef<HTMLDivElement, DragElementProps>(
         onDragStart={(e) => {
           onDragStart && onDragStart(e)
           dragStartHandler({ id: dragSourceId })
-          setTimeout(() => {
-            if (ref && 'current' in ref && ref.current) {
-              ref.current.style.setProperty('display', 'none')
-            }
-          }, 0)
         }}
         style={{
           cursor: 'grab',
+          transition: 'opacity 200ms ease',
           backgroundColor: '#f0f0f0',
           userSelect: 'none',
         }}

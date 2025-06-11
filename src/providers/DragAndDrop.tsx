@@ -36,6 +36,26 @@ interface DragAndDropProviderProps {
   children: ReactNode
 }
 
+function showElement(ref: any) {
+  setTimeout(() => {
+    if (ref) {
+      ref.current.style.display = 'inherit'
+      ref.current.style.opacity = '1'
+      ref.current.style.pointerEvents = 'auto'
+    }
+  }, 0)
+}
+
+function hideElement(ref: any) {
+  setTimeout(() => {
+    if (ref) {
+      ref.current.style.display = 'none'
+      ref.current.style.opacity = '0'
+      ref.current.style.pointerEvents = 'none'
+    }
+  }, 0)
+}
+
 export const DragAndDropProvider: React.FC<DragAndDropProviderProps> = ({
   children,
 }) => {
@@ -75,6 +95,8 @@ export function useDragElement(instanceData: any) {
     if (!instanceData?.ref) {
       return
     }
+
+    hideElement(instanceData.ref)
 
     updateData({
       draggableObject: {
@@ -134,6 +156,7 @@ export function useDragContainer(instanceData: any) {
 
   function dropHandler() {
     draggableObject?.ref?.current?.style.setProperty('display', 'inherit')
+    showElement(draggableObject?.ref)
     updateData({ draggableObject: null, source: null, target: null })
   }
 
