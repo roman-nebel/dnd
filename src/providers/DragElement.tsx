@@ -27,6 +27,7 @@ export default React.forwardRef<HTMLDivElement, DragElementProps>(
       type: dragElementType,
       ref,
     })
+
     return (
       <div
         ref={ref}
@@ -35,6 +36,11 @@ export default React.forwardRef<HTMLDivElement, DragElementProps>(
         onDragStart={(e) => {
           onDragStart && onDragStart(e)
           dragStartHandler({ id: dragSourceId })
+          setTimeout(() => {
+            if (ref && 'current' in ref && ref.current) {
+              ref.current.style.setProperty('display', 'none')
+            }
+          }, 0)
         }}
         style={{
           cursor: 'grab',

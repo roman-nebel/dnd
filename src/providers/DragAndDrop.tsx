@@ -133,6 +133,7 @@ export function useDragContainer(instanceData: any) {
   }
 
   function dropHandler() {
+    draggableObject?.ref?.current?.style.setProperty('display', 'inherit')
     updateData({ draggableObject: null, source: null, target: null })
   }
 
