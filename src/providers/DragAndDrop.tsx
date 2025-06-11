@@ -56,6 +56,21 @@ function hideElement(ref: any) {
   }, 0)
 }
 
+function findDroppableAncestor(instance: any, draggable: any) {
+  let current = instance
+  while (current) {
+    if (
+      current.droppableTypes &&
+      draggable.type &&
+      current.droppableTypes.includes(draggable.type)
+    ) {
+      return current
+    }
+    current = current.parent
+  }
+  return null
+}
+
 export const DragAndDropProvider: React.FC<DragAndDropProviderProps> = ({
   children,
 }) => {
@@ -146,7 +161,14 @@ export function useDragContainer(instanceData: any) {
 
   function dragEnterHandler() {
     setTimeout(() => {
-      updateData({ target: instanceData })
+      console.log('dragEnterHandler', instanceData, draggableObject)
+      const droppableAncestor = findDroppableAncestor(
+        instanceData,
+        draggableObject
+      )
+      if (droppableAncestor) {
+        updateData({ target: droppableAncestor })
+      }
     }, 16)
   }
 
