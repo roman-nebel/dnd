@@ -8,21 +8,20 @@ import React, {
 
 type DragBaseElement = {
   id: string
-  ref?: React.RefObject<HTMLDivElement> | null
 }
 
 type DragElement = DragBaseElement & { type: string }
-type DragSource = DragBaseElement & { availableActions?: string[] }
-type DragTarget = DragBaseElement & {
-  droppableTypes?: string[]
+type DragContainer = DragBaseElement & { availableActions?: string[] }
+type DropContainer = DragBaseElement & {
+  droppableTypes: string[]
   availableActions?: string[]
 }
 
 // Define the context type
 interface DragAndDropContextType {
-  draggableObject: DragElement | null
-  source: DragSource | null
-  target: DragTarget | null
+  dragElement: DragElement | null
+  dragContainer: DragContainer | null
+  dropContainer: DropContainer | null
   updateData: (newData: Partial<DragAndDropContextType>) => void
 }
 
@@ -35,13 +34,24 @@ const DragAndDropContext = createContext<DragAndDropContextType | undefined>(
 interface DragAndDropProviderProps {
   children: ReactNode
 }
+function findDraggableElement(id: string | null) {
+  const element = document.querySelector('[data-drag-element-id="' + id + '"]')
+  return element || null
+}
+
+function findDroppableContainer(id: string | null) {
+  const element = document.querySelector(
+    '[data-drop-container-id="' + id + '"]'
+  )
+  return element || null
+}
 
 function showElement(ref: any) {
   setTimeout(() => {
     if (ref) {
-      ref.current.style.display = 'inherit'
-      ref.current.style.opacity = '1'
-      ref.current.style.pointerEvents = 'auto'
+      ref.style.display = 'inherit'
+      ref.style.opacity = '1'
+      ref.style.pointerEvents = 'auto'
     }
   }, 0)
 }
@@ -49,26 +59,11 @@ function showElement(ref: any) {
 function hideElement(ref: any) {
   setTimeout(() => {
     if (ref) {
-      ref.current.style.display = 'none'
-      ref.current.style.opacity = '0'
-      ref.current.style.pointerEvents = 'none'
+      ref.style.display = 'none'
+      ref.style.opacity = '0'
+      ref.style.pointerEvents = 'none'
     }
   }, 0)
-}
-
-function findDroppableAncestor(instance: any, draggable: any) {
-  let current = instance
-  while (current) {
-    if (
-      current.droppableTypes &&
-      draggable.type &&
-      current.droppableTypes.includes(draggable.type)
-    ) {
-      return current
-    }
-    current = current.parent
-  }
-  return null
 }
 
 export const DragAndDropProvider: React.FC<DragAndDropProviderProps> = ({
@@ -103,22 +98,22 @@ export const useDragAndDrop = (): DragAndDropContextType => {
   return context
 }
 
-export function useDragElement(instanceData: any) {
+export function useDragElement(dragElement: DragElement) {
   const { updateData } = useDragAndDrop()
 
-  function dragStartHandler(source: DragSource) {
-    if (!instanceData?.ref) {
+  function dragStartHandler(dragContainer: DragContainer) {
+    const { id } = dragElement
+    const dragElementRef = findDraggableElement(id)
+    if (!dragElementRef) {
+      console.warn('Draggable element not found:', id)
       return
     }
 
-    hideElement(instanceData.ref)
+    hideElement(dragElementRef)
 
     updateData({
-      draggableObject: {
-        ...instanceData,
-        ref: instanceData.ref,
-      },
-      source: source,
+      dragElement,
+      dragContainer,
     })
   }
 
@@ -127,12 +122,12 @@ export function useDragElement(instanceData: any) {
   }
 }
 
-export function useDragContainer(instanceData: any) {
+export function useDropContainer(container: DropContainer) {
   const [state, setState] = useState({
     canBeDropped: false,
     readyToDrop: false,
   })
-  const { draggableObject, target, updateData } = useDragAndDrop()
+  const { dragElement, dropContainer, updateData } = useDragAndDrop()
 
   function updateState(newState: any) {
     setState((prev: any) => {
@@ -141,45 +136,53 @@ export function useDragContainer(instanceData: any) {
   }
 
   useEffect(() => {
+    if (!dragElement) {
+      updateState({ canBeDropped: false, readyToDrop: false })
+      return
+    }
     const canBeDropped = Boolean(
-      draggableObject &&
-        instanceData.droppableTypes &&
-        instanceData.droppableTypes.includes(draggableObject?.type)
+      container.droppableTypes.includes(dragElement?.type)
     )
     updateState({ canBeDropped })
-  }, [draggableObject])
+  }, [dragElement])
 
   useEffect(() => {
+    console.log(container, dragElement, dropContainer)
     const readyToDrop = Boolean(
-      draggableObject?.type &&
-        target?.droppableTypes &&
-        target.droppableTypes.includes(draggableObject?.type) &&
-        target?.id === instanceData?.id
+      dragElement?.type &&
+        container?.droppableTypes &&
+        container.droppableTypes.includes(dragElement?.type) &&
+        dropContainer?.id === container.id
     )
     updateState({ readyToDrop })
-  }, [target])
+  }, [dragElement, dropContainer])
 
-  function dragEnterHandler() {
+  function dragEnterHandler(onDragEnter?: () => void) {
     setTimeout(() => {
-      console.log('dragEnterHandler', instanceData, draggableObject)
-      const droppableAncestor = findDroppableAncestor(
-        instanceData,
-        draggableObject
-      )
-      if (droppableAncestor) {
-        updateData({ target: droppableAncestor })
-      }
+      onDragEnter && onDragEnter()
+      updateData({ dropContainer: container })
     }, 16)
   }
 
-  function dragLeaveHandler() {
-    updateData({ target: null })
+  function dragLeaveHandler(onDragLeave?: () => void) {
+    onDragLeave && onDragLeave()
+    updateData({ dropContainer: null })
   }
 
-  function dropHandler() {
-    draggableObject?.ref?.current?.style.setProperty('display', 'inherit')
-    showElement(draggableObject?.ref)
-    updateData({ draggableObject: null, source: null, target: null })
+  function dropHandler(
+    onDrop?: (
+      canBeDropped: boolean,
+      dragElementRef: any,
+      dropContainerRef: any
+    ) => void
+  ) {
+    if (!dragElement || !state.canBeDropped) return
+    const dragElementRef = findDraggableElement(dragElement?.id)
+    const dropContainerRef = findDroppableContainer(container.id)
+    onDrop && onDrop(state.canBeDropped, dragElementRef, dropContainerRef)
+    ;(dragElementRef as HTMLElement)?.style.setProperty('display', 'inherit')
+    showElement(dragElementRef)
+    updateData({ dragElement: null, dragContainer: null, dropContainer: null })
   }
 
   return {

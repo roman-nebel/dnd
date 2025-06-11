@@ -10,42 +10,36 @@ interface DragElementProps {
   children: React.ReactNode
 }
 
-export default React.forwardRef<HTMLDivElement, DragElementProps>(
-  (
-    {
-      className,
-      dragElementId,
-      dragSourceId,
-      dragElementType,
-      onDragStart,
-      children,
-    }: DragElementProps,
-    ref: React.ForwardedRef<HTMLDivElement>
-  ) => {
-    const { dragStartHandler } = useDragElement({
-      id: dragElementId,
-      type: dragElementType,
-      ref,
-    })
+export default function DragElement({
+  className,
+  dragElementId,
+  dragSourceId,
+  dragElementType,
+  onDragStart,
+  children,
+}: DragElementProps) {
+  const { dragStartHandler } = useDragElement({
+    id: dragElementId,
+    type: dragElementType,
+  })
 
-    return (
-      <div
-        ref={ref}
-        className={className}
-        draggable={true}
-        onDragStart={(e) => {
-          onDragStart && onDragStart(e)
-          dragStartHandler({ id: dragSourceId })
-        }}
-        style={{
-          cursor: 'grab',
-          transition: 'opacity 200ms ease',
-          backgroundColor: '#f0f0f0',
-          userSelect: 'none',
-        }}
-      >
-        {children}
-      </div>
-    )
-  }
-)
+  return (
+    <div
+      data-drag-element-id={dragElementId}
+      className={className}
+      draggable={true}
+      onDragStart={(e) => {
+        onDragStart && onDragStart(e)
+        dragStartHandler({ id: dragSourceId })
+      }}
+      style={{
+        cursor: 'grab',
+        transition: 'opacity 200ms ease',
+        backgroundColor: '#f0f0f0',
+        userSelect: 'none',
+      }}
+    >
+      {children}
+    </div>
+  )
+}

@@ -4,16 +4,16 @@ import DragElement1 from '../components/DragElement1'
 import { useDragAndDrop } from '../providers/DragAndDrop'
 
 export default function DragAndDrop() {
-  const { draggableObject, source, target } = useDragAndDrop()
+  const { dragElement, dragContainer, dropContainer } = useDragAndDrop()
   return (
     <div>
       <h1>Drag and Drop Example</h1>
       <p>
         Drag and drop functionality will be implemented here.{' '}
         <i>
-          ({source?.id || 'No source'} –{' '}
-          {draggableObject?.id || 'None dragging'} – {target?.id || 'No target'}
-          )
+          ({dragContainer?.id || 'No source'} –{' '}
+          {dragElement?.id || 'None dragging'} –{' '}
+          {dropContainer?.id || 'No target'})
         </i>
       </p>
       <DragArea1 dropAreaId="area1">

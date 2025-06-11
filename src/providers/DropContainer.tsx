@@ -1,66 +1,61 @@
 import React from 'react'
-import { useDragContainer } from './DragAndDrop'
+import { useDropContainer } from './DragAndDrop'
 
 interface DropContainerProps {
   className?: string
   dropAreaId: string
   droppableTypes?: string[]
-  onDragEnter?: (event: React.DragEvent<HTMLDivElement>) => void
-  onDragLeave?: (event: React.DragEvent<HTMLDivElement>) => void
-  onDrop?: (canBeDropped: boolean) => void
+  onDragEnter?: () => void
+  onDragLeave?: () => void
+  onDrop?: (
+    canBeDropped: boolean,
+    dragElementRef: any,
+    dropElementRef: any
+  ) => void
   children?: React.ReactNode
 }
 
-export default React.forwardRef<HTMLDivElement, DropContainerProps>(
-  (
-    {
-      className,
-      dropAreaId,
-      droppableTypes,
-      onDragEnter,
-      onDragLeave,
-      onDrop,
-      children,
-    }: DropContainerProps,
-    ref: React.ForwardedRef<HTMLDivElement>
-  ) => {
-    const droppableContainer = {
-      id: dropAreaId,
-      droppableTypes: droppableTypes || [],
-      ref: ref,
-    }
-    const {
-      canBeDropped,
-      readyToDrop,
-      dragEnterHandler,
-      dropHandler,
-      dragLeaveHandler,
-    } = useDragContainer(droppableContainer)
-    return (
-      <div
-        ref={ref}
-        className={`dropzone${canBeDropped ? ' _highlight' : ''}${readyToDrop ? ' _ready' : ''} ${className || ''}`}
-        onDragEnter={(e: React.DragEvent<HTMLDivElement>) => {
-          e && e.preventDefault()
-          onDragEnter && onDragEnter(e)
-          dragEnterHandler()
-        }}
-        onDragOver={(e: React.DragEvent<HTMLDivElement>) => {
-          e && e.preventDefault()
-        }}
-        onDragLeave={(e: React.DragEvent<HTMLDivElement>) => {
-          e && e.preventDefault()
-          onDragLeave && onDragLeave(e)
-          dragLeaveHandler()
-        }}
-        onDrop={(e: React.DragEvent<HTMLDivElement>) => {
-          e && e.preventDefault()
-          onDrop && onDrop(canBeDropped)
-          dropHandler()
-        }}
-      >
-        {children}
-      </div>
-    )
+export default function DropContainer({
+  className,
+  dropAreaId,
+  droppableTypes,
+  onDragEnter,
+  onDragLeave,
+  onDrop,
+  children,
+}: DropContainerProps) {
+  const droppableContainer = {
+    id: dropAreaId,
+    droppableTypes: droppableTypes || [],
   }
-)
+  const {
+    canBeDropped,
+    readyToDrop,
+    dragEnterHandler,
+    dropHandler,
+    dragLeaveHandler,
+  } = useDropContainer(droppableContainer)
+  return (
+    <div
+      data-drop-container-id={dropAreaId}
+      className={`dropzone${canBeDropped ? ' _highlight' : ''}${readyToDrop ? ' _ready' : ''} ${className || ''}`}
+      onDragEnter={(e: React.DragEvent<HTMLDivElement>) => {
+        e && e.preventDefault()
+        dragEnterHandler(onDragEnter)
+      }}
+      onDragOver={(e: React.DragEvent<HTMLDivElement>) => {
+        e && e.preventDefault()
+      }}
+      onDragLeave={(e: React.DragEvent<HTMLDivElement>) => {
+        e && e.preventDefault()
+        dragLeaveHandler(onDragLeave)
+      }}
+      onDrop={(e: React.DragEvent<HTMLDivElement>) => {
+        e && e.preventDefault()
+        dropHandler(onDrop)
+      }}
+    >
+      {children}
+    </div>
+  )
+}
