@@ -147,7 +147,6 @@ export function useDropContainer(container: DropContainer) {
   }, [dragElement])
 
   useEffect(() => {
-    console.log(container, dragElement, dropContainer)
     const readyToDrop = Boolean(
       dragElement?.type &&
         container?.droppableTypes &&
@@ -161,6 +160,7 @@ export function useDropContainer(container: DropContainer) {
     setTimeout(() => {
       onDragEnter && onDragEnter()
       updateData({ dropContainer: container })
+      console.log('Drag enter:', findDroppableContainer(container?.id || null))
     }, 16)
   }
 
