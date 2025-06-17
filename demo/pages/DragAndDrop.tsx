@@ -2,7 +2,7 @@ import { useState } from 'react'
 import DragArea1 from '../components/DragArea1'
 import DragArea2 from '../components/DragArea2'
 import DragElement1 from '../components/DragElement1'
-import { useDragAndDrop } from '../providers/DragAndDrop'
+import { useDragAndDrop } from '../../src/provider/DragAndDrop'
 
 export default function DragAndDrop() {
   const [state, setState] = useState({

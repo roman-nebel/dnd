@@ -1,5 +1,5 @@
 import './DragArea.css'
-import DragContainer from '../providers/DropContainer'
+import DragContainer from '../../src/components/DropContainer'
 
 export default function DragArea1({
   children,

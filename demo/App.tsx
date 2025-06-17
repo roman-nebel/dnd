@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
 import DragAndDrop from './pages/DragAndDrop'
-import { DragAndDropProvider } from './providers/DragAndDrop'
+import { DragAndDropProvider } from '../src/provider/DragAndDrop'
 
 const App = () => {
   return (
