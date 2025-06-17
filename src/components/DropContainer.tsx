@@ -14,6 +14,7 @@ interface DropContainerProps {
     dropElementRef: any
   ) => void
   children?: React.ReactNode
+  [key: string]: any // Allow additional props
 }
 
 export default function DropContainer({
@@ -25,6 +26,7 @@ export default function DropContainer({
   onDragEnd,
   onDrop,
   children,
+  ...props
 }: DropContainerProps) {
   const droppableContainer = {
     id: dropAreaId,
