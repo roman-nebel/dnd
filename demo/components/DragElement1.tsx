@@ -6,6 +6,12 @@ export default function DragElement1({ dragElementId, dragSourceId }: any) {
       dragElementId={dragElementId}
       dragElementType="goal"
       dragSourceId={dragSourceId}
+      style={{
+        cursor: 'grab',
+        transition: 'opacity 200ms ease',
+        backgroundColor: '#f0f0f0',
+        userSelect: 'none',
+      }}
     >
       Drag me!
     </DragElement>

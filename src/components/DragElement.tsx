@@ -8,6 +8,7 @@ interface DragElementProps {
   dragElementType: string
   onDragStart?: (event: React.DragEvent<HTMLDivElement>) => void
   children: React.ReactNode
+  [key: string]: any // Allow additional props
 }
 
 export default function DragElement({
@@ -17,6 +18,7 @@ export default function DragElement({
   dragElementType,
   onDragStart,
   children,
+  ...props
 }: DragElementProps) {
   const { dragStartHandler } = useDragElement({
     id: dragElementId,
@@ -32,12 +34,7 @@ export default function DragElement({
         onDragStart && onDragStart(e)
         dragStartHandler({ id: dragSourceId })
       }}
-      style={{
-        cursor: 'grab',
-        transition: 'opacity 200ms ease',
-        backgroundColor: '#f0f0f0',
-        userSelect: 'none',
-      }}
+      {...props}
     >
       {children}
     </div>
