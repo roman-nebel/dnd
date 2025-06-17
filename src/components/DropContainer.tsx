@@ -1,5 +1,5 @@
 import React from 'react'
-import { useDropContainer } from './DragAndDrop'
+import { useDropContainer } from '../provider/DragAndDrop'
 
 interface DropContainerProps {
   className?: string
