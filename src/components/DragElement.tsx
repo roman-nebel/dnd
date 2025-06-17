@@ -1,5 +1,5 @@
+import React from 'react'
 import { useDragElement } from '../provider/DragAndDrop'
-import React, { useEffect } from 'react'
 
 interface DragElementProps {
   className?: string
