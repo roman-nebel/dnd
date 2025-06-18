@@ -3,9 +3,9 @@ import { useDragElement } from '../provider/DragAndDrop'
 
 interface DragElementProps {
   className?: string
-  dragElementId: string
-  dragSourceId: string
-  dragElementType: string
+  id?: string
+  dragId: string
+  dragType: string
   onDragStart?: (event: React.DragEvent<HTMLDivElement>) => void
   children: React.ReactNode
   [key: string]: any // Allow additional props
@@ -13,26 +13,27 @@ interface DragElementProps {
 
 export default function DragElement({
   className,
-  dragElementId,
-  dragSourceId,
-  dragElementType,
+  id,
+  dragId,
+  dragType,
   onDragStart,
   children,
   ...props
 }: DragElementProps) {
-  const { dragStartHandler } = useDragElement({
-    id: dragElementId,
-    type: dragElementType,
+  const { dragStartHandler, dragRef } = useDragElement({
+    id: dragId,
+    type: dragType,
   })
 
   return (
     <div
-      data-drag-element-id={dragElementId}
+      ref={dragRef}
+      data-drag-element-id={dragId}
       className={className}
       draggable={true}
       onDragStart={(e) => {
         onDragStart && onDragStart(e)
-        dragStartHandler({ id: dragSourceId })
+        dragStartHandler()
       }}
       {...props}
     >

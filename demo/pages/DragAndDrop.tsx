@@ -26,9 +26,9 @@ export default function DragAndDrop() {
         return (
           <div key={areaId} className="drag-area">
             <h2>{areaId}</h2>
-            <DragArea1 dropAreaId={areaId}>
+            <DragArea1 dropId={areaId}>
               {state[areaId].map((el) => (
-                <DragElement1 key={el} dragElementId={el} />
+                <DragElement1 key={el} dragId={el} />
               ))}
             </DragArea1>
           </div>

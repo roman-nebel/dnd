@@ -3,7 +3,7 @@ import { useDropContainer } from '../provider/DragAndDrop'
 
 interface DropContainerProps {
   className?: string
-  dropAreaId: string
+  dropId: string
   droppableTypes?: string[]
   onDragEnter?: () => void
   onDragLeave?: () => void
@@ -19,7 +19,7 @@ interface DropContainerProps {
 
 export default function DropContainer({
   className,
-  dropAreaId,
+  dropId,
   droppableTypes,
   onDragEnter,
   onDragLeave,
@@ -29,19 +29,21 @@ export default function DropContainer({
   ...props
 }: DropContainerProps) {
   const droppableContainer = {
-    id: dropAreaId,
-    droppableTypes: droppableTypes || [],
+    id: dropId,
+    types: droppableTypes || [],
   }
   const {
     canBeDropped,
     readyToDrop,
+    ref,
     dragEnterHandler,
     dropHandler,
     dragLeaveHandler,
   } = useDropContainer(droppableContainer)
   return (
     <div
-      data-drop-container-id={dropAreaId}
+      ref={ref}
+      data-drop-id={dropId}
       className={`dropzone${canBeDropped ? ' _highlight' : ''}${readyToDrop ? ' _ready' : ''} ${className || ''}`}
       onDragEnter={(e: React.DragEvent<HTMLDivElement>) => {
         e && e.preventDefault()

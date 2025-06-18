@@ -1,11 +1,11 @@
 import DragElement from '../../src/components/DragElement'
 
-export default function DragElement1({ dragElementId, dragSourceId }: any) {
+export default function DragElement1({ id, dragId }: any) {
   return (
     <DragElement
-      dragElementId={dragElementId}
-      dragElementType="goal"
-      dragSourceId={dragSourceId}
+      id={id}
+      dragId={dragId || id}
+      dragType="goal"
       style={{
         cursor: 'grab',
         transition: 'opacity 200ms ease',

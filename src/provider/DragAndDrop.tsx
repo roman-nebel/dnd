@@ -4,17 +4,19 @@ import React, {
   useState,
   ReactNode,
   useEffect,
+  useRef,
 } from 'react'
 
 type DragBaseElement = {
   id: string
 }
 
-type DragElement = DragBaseElement & { type: string }
+type DragElement = DragBaseElement & { type: string; ref?: any }
 type DragContainer = DragBaseElement & { availableActions?: string[] }
 type DropContainer = DragBaseElement & {
-  droppableTypes: string[]
+  types: string[]
   availableActions?: string[]
+  ref?: any
 }
 
 // Define the context type
@@ -98,36 +100,37 @@ export const useDragAndDrop = (): DragAndDropContextType => {
   return context
 }
 
-export function useDragElement(dragElement: DragElement) {
+export function useDragElement({ id, type }: { id: string; type: string }) {
   const { updateData } = useDragAndDrop()
+  const dragElementRef = useRef(null)
 
-  function dragStartHandler(dragContainer: DragContainer) {
-    const { id } = dragElement
-    const dragElementRef = findDraggableElement(id)
-    if (!dragElementRef) {
-      console.warn('Draggable element not found:', id)
-      return
-    }
-
-    hideElement(dragElementRef)
+  function dragStartHandler() {
+    //hideElement(dragElementRef)
 
     updateData({
-      dragElement,
-      dragContainer,
+      dragElement: { id, type, ref: dragElementRef.current },
     })
   }
 
   return {
     dragStartHandler,
+    dragRef: dragElementRef.current,
   }
 }
 
-export function useDropContainer(container: DropContainer) {
+export function useDropContainer({
+  id,
+  types,
+}: {
+  id: string
+  types: string[]
+}) {
   const [state, setState] = useState({
     canBeDropped: false,
     readyToDrop: false,
   })
   const { dragElement, dropContainer, updateData } = useDragAndDrop()
+  const dropContainerRef = useRef(null)
 
   function updateState(newState: any) {
     setState((prev: any) => {
@@ -140,27 +143,27 @@ export function useDropContainer(container: DropContainer) {
       updateState({ canBeDropped: false, readyToDrop: false })
       return
     }
-    const canBeDropped = Boolean(
-      container.droppableTypes.includes(dragElement?.type)
-    )
+    const canBeDropped = Boolean(types.includes(dragElement?.type))
     updateState({ canBeDropped })
   }, [dragElement])
 
   useEffect(() => {
     const readyToDrop = Boolean(
       dragElement?.type &&
-        container?.droppableTypes &&
-        container.droppableTypes.includes(dragElement?.type) &&
-        dropContainer?.id === container.id
+        types.includes(dragElement?.type) &&
+        dropContainer?.id === id
     )
     updateState({ readyToDrop })
   }, [dragElement, dropContainer])
 
   function dragEnterHandler(onDragEnter?: () => void) {
+    console.log(dragElement, dropContainer)
     setTimeout(() => {
       onDragEnter && onDragEnter()
-      updateData({ dropContainer: container })
-      console.log('Drag enter:', findDroppableContainer(container?.id || null))
+      updateData({
+        dropContainer: { id, types, ref: dropContainerRef.current },
+      })
+      console.log('Drag enter:', id)
     }, 16)
   }
 
@@ -178,7 +181,7 @@ export function useDropContainer(container: DropContainer) {
   ) {
     if (!dragElement || !state.canBeDropped) return
     const dragElementRef = findDraggableElement(dragElement?.id)
-    const dropContainerRef = findDroppableContainer(container.id)
+    const dropContainerRef = findDroppableContainer(id)
     onDrop && onDrop(state.canBeDropped, dragElementRef, dropContainerRef)
     ;(dragElementRef as HTMLElement)?.style.setProperty('display', 'inherit')
     showElement(dragElementRef)
@@ -187,6 +190,7 @@ export function useDropContainer(container: DropContainer) {
 
   return {
     ...state,
+    ref: dropContainerRef.current,
     dragEnterHandler,
     dragLeaveHandler,
     dropHandler,
