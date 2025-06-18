@@ -157,7 +157,6 @@ export function useDropContainer({
   }, [dragElement, dropContainer])
 
   function dragEnterHandler(onDragEnter?: () => void) {
-    console.log(dragElement, dropContainer)
     setTimeout(() => {
       onDragEnter && onDragEnter()
       updateData({
@@ -170,6 +169,7 @@ export function useDropContainer({
   function dragLeaveHandler(onDragLeave?: () => void) {
     onDragLeave && onDragLeave()
     updateData({ dropContainer: null })
+    console.log('Drag leave:', id)
   }
 
   function dropHandler(
@@ -179,12 +179,10 @@ export function useDropContainer({
       dropContainerRef: any
     ) => void
   ) {
+    console.log('Drop handler:', state, dragElement, dropContainer)
     if (!dragElement || !state.canBeDropped) return
-    const dragElementRef = findDraggableElement(dragElement?.id)
-    const dropContainerRef = findDroppableContainer(id)
-    onDrop && onDrop(state.canBeDropped, dragElementRef, dropContainerRef)
-    ;(dragElementRef as HTMLElement)?.style.setProperty('display', 'inherit')
-    showElement(dragElementRef)
+    onDrop && onDrop(state.canBeDropped, dragElement.ref, dropContainerRef)
+    //showElement(dragElementRef)
     updateData({ dragElement: null, dragContainer: null, dropContainer: null })
   }
 
