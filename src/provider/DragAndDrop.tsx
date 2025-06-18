@@ -105,7 +105,7 @@ export function useDragElement({ id, type }: { id: string; type: string }) {
   const dragRef = useRef<HTMLDivElement | null>(null) // Ensure ref is properly typed
 
   function dragStartHandler() {
-    //hideElement(dragElementRef)
+    hideElement(dragRef.current)
 
     updateData({
       dragElement: { id, type, ref: dragRef.current }, // Pass the current
@@ -162,14 +162,12 @@ export function useDropContainer({
       updateData({
         dropContainer: { id, types, ref: dropRef.current },
       })
-      console.log('Drag enter:', id)
     }, 16)
   }
 
   function dragLeaveHandler(onDragLeave?: () => void) {
     onDragLeave && onDragLeave()
     updateData({ dropContainer: null })
-    console.log('Drag leave:', id)
   }
 
   function dropHandler(
@@ -179,10 +177,9 @@ export function useDropContainer({
       dropContainerRef: any
     ) => void
   ) {
-    console.log('Drop handler:', state, dragElement, dropContainer)
     if (!dragElement || !state.canBeDropped) return
     onDrop && onDrop(state.canBeDropped, dragElement.ref, dropContainer?.ref)
-    //showElement(dragElementRef)
+    showElement(dragElement.ref)
     updateData({ dragElement: null, dragContainer: null, dropContainer: null })
   }
 
