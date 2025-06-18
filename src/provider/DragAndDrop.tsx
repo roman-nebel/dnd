@@ -19,7 +19,6 @@ type DropContainer = DragBaseElement & {
   ref?: any
 }
 
-// Define the context type
 interface DragAndDropContextType {
   dragElement: DragElement | null
   dragContainer: DragContainer | null
@@ -27,25 +26,12 @@ interface DragAndDropContextType {
   updateData: (newData: Partial<DragAndDropContextType>) => void
 }
 
-// Create the context
 const DragAndDropContext = createContext<DragAndDropContextType | undefined>(
   undefined
 )
 
-// Create the provider component
 interface DragAndDropProviderProps {
   children: ReactNode
-}
-function findDraggableElement(id: string | null) {
-  const element = document.querySelector('[data-drag-element-id="' + id + '"]')
-  return element || null
-}
-
-function findDroppableContainer(id: string | null) {
-  const element = document.querySelector(
-    '[data-drop-container-id="' + id + '"]'
-  )
-  return element || null
 }
 
 function showElement(ref: any) {
@@ -91,7 +77,6 @@ export const DragAndDropProvider: React.FC<DragAndDropProviderProps> = ({
   )
 }
 
-// Custom hook to use the context
 export const useDragAndDrop = (): DragAndDropContextType => {
   const context = useContext(DragAndDropContext)
   if (!context) {
@@ -102,13 +87,13 @@ export const useDragAndDrop = (): DragAndDropContextType => {
 
 export function useDragElement({ id, type }: { id: string; type: string }) {
   const { updateData } = useDragAndDrop()
-  const dragRef = useRef<HTMLDivElement | null>(null) // Ensure ref is properly typed
+  const dragRef = useRef<HTMLDivElement | null>(null)
 
   function dragStartHandler() {
     //hideElement(dragRef.current)
 
     updateData({
-      dragElement: { id, type, ref: dragRef.current }, // Pass the current
+      dragElement: { id, type, ref: dragRef.current },
     })
   }
 

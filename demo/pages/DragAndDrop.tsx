@@ -19,21 +19,17 @@ export default function DragAndDrop() {
   ) {
     if (canBeDropped && dragElementRef && dropContainerRef) {
       setState((prevState) => {
-        console.log(dragElementRef.dataset, dropContainerRef.dataset)
         const newState = { ...prevState }
         const dragId = dragElementRef.dataset.dragId
         const dropId = dropContainerRef.dataset.dropId
 
-        // Remove the element from its current area
         for (const area in newState) {
           newState[area] = newState[area].filter((el) => el !== dragId)
         }
 
-        // Add the element to the new area
         if (newState[dropId]) {
           newState[dropId].push(dragId)
         }
-        console.log(newState)
         return newState
       })
     }

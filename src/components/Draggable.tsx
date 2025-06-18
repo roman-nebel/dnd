@@ -8,7 +8,7 @@ interface DraggableProps {
   dragType: string
   onDragStart?: (event: React.DragEvent<HTMLDivElement>) => void
   children: React.ReactNode
-  [key: string]: any // Allow additional props
+  [key: string]: any
 }
 
 export default function Draggable({
@@ -27,7 +27,7 @@ export default function Draggable({
 
   return (
     <div
-      ref={dragRef} // Pass the ref directly to the DOM element
+      ref={dragRef}
       data-drag-id={dragId}
       className={className}
       draggable={true}

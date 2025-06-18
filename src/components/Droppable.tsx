@@ -14,7 +14,7 @@ interface DroppableProps {
     dropElementRef: any
   ) => void
   children?: React.ReactNode
-  [key: string]: any // Allow additional props
+  [key: string]: any
 }
 
 export default function Droppable({
