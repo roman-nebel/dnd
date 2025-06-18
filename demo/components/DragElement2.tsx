@@ -1,6 +1,6 @@
 import Draggable from '../../src/components/Draggable'
 
-export default function DragElement2({ id, dragId }: any) {
+export default function DragElement2({ id, dragId, children }: any) {
   return (
     <Draggable
       id={id}
@@ -13,7 +13,7 @@ export default function DragElement2({ id, dragId }: any) {
         userSelect: 'none',
       }}
     >
-      Drag me!
+      {children}
     </Draggable>
   )
 }

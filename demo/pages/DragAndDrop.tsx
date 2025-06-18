@@ -5,12 +5,21 @@ import DragElement1 from '../components/DragElement1'
 import { useDragAndDrop } from '../../src/provider/DragAndDrop'
 import DragElement2 from '../components/DragElement2'
 
+const initialState = {
+  area1: [
+    { id: 'el1', name: 'Element 1' },
+    { id: 'el2', name: 'Element 2' },
+  ],
+  area2: [
+    { id: 'el3', name: 'Element 3' },
+    { id: 'el4', name: 'Element 4' },
+    { id: 'el5', name: 'Element 5' },
+  ],
+  area3: [{ id: 'el6', name: 'Element 6' }],
+}
+
 export default function DragAndDrop() {
-  const [state, setState] = useState({
-    area1: ['el1', 'el2'],
-    area2: ['el3', 'el4', 'el5'],
-    area3: [],
-  })
+  const [state, setState] = useState(initialState)
   const { dragElement, dragContainer, dropContainer } = useDragAndDrop()
 
   function dropHandler() {
@@ -21,11 +30,14 @@ export default function DragAndDrop() {
         const dropId = dropContainer?.ref.dataset.dropId
 
         for (const area in newState) {
-          newState[area] = newState[area].filter((el) => el !== dragId)
+          newState[area] = newState[area].filter((el) => el.id !== dragId)
         }
 
         if (newState[dropId]) {
-          newState[dropId].push(dragId)
+          newState[dropId].push({
+            id: dragId,
+            name: dragElement?.ref.textContent || 'New Element',
+          })
         }
         return newState
       })
@@ -43,30 +55,32 @@ export default function DragAndDrop() {
         </i>
       </p>
       <div key={'area1'} className="drag-area">
-        <h2>{'Area 1'}</h2>
+        <h2>Area 1</h2>
         <DragArea1 dropId={'area1'} onDrop={dropHandler}>
           {state['area1'].map((el) => (
-            <DragElement1 key={el} dragId={el} />
+            <DragElement1 key={el.id} dragId={el.id}>
+              {el.name}
+            </DragElement1>
           ))}
         </DragArea1>
       </div>
       <div key={'area2'} className="drag-area">
-        <h2>{'Area 2'}</h2>
+        <h2>Area 2</h2>
         <DragArea1 dropId={'area2'} onDrop={dropHandler}>
           {state['area2'].map((el) => (
-            <DragElement1 key={el} dragId={el} />
+            <DragElement1 key={el.id} dragId={el.id}>
+              {el.name}
+            </DragElement1>
           ))}
         </DragArea1>
       </div>
       <div key={'area3'} className="drag-area">
-        <h2>{'Area 3'}</h2>
-        <div>
-          <DragElement2 dragId={'el6'} />
-          <DragElement2 dragId={'el7'} />
-        </div>
+        <h2>Area 3</h2>
         <DragArea2 dropId={'area3'} onDrop={dropHandler}>
           {state['area3'].map((el) => (
-            <DragElement1 key={el} dragId={el} />
+            <DragElement2 key={el.id} dragId={el.id}>
+              {el.name}
+            </DragElement2>
           ))}
         </DragArea2>
       </div>
