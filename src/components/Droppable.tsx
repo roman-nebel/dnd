@@ -47,9 +47,9 @@ export default function Droppable({
       data-drop-id={dropId}
       className={setlassNames([
         className,
-        'dropzone',
-        canBeDropped ? '_highlight' : '',
-        readyToDrop ? ' _ready' : '',
+        'droppable',
+        canBeDropped ? '_available' : '_unavailable',
+        readyToDrop ? '_ready' : '',
       ])}
       onDragEnter={(e: React.DragEvent<HTMLDivElement>) => {
         e && e.preventDefault()

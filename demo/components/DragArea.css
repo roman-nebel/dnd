@@ -1,4 +1,4 @@
-.dropzone {
+.droppable {
   border: 2px dashed #ccc;
   border-radius: 8px;
   padding: 20px;
@@ -8,12 +8,17 @@
     background-color 0.3s;
 }
 
-.dropzone._highlight {
+.droppable._available {
   border: 2px dashed #4a90e2;
   background-color: rgba(74, 144, 226, 0.1);
 }
 
-.dropzone._ready {
+.droppable._unavailable {
+  border: 2px dashed #e24a4a;
+  background-color: rgba(74, 144, 226, 0.1);
+}
+
+.droppable._ready {
   border-color: #4caf50;
   background-color: rgba(76, 175, 80, 0.1);
 }
