@@ -1,8 +1,9 @@
 import React from 'react'
 import { useDropContainer } from '../provider/DragAndDrop'
+import setlassNames from '../utils/classNames'
 
 interface DroppableProps {
-  className?: string
+  className?: string | null
   dropId: string
   droppableTypes?: string[]
   onDragEnter?: () => void
@@ -18,7 +19,7 @@ interface DroppableProps {
 }
 
 export default function Droppable({
-  className,
+  className = null,
   dropId,
   droppableTypes,
   onDragEnter,
@@ -44,7 +45,12 @@ export default function Droppable({
     <div
       ref={dropRef}
       data-drop-id={dropId}
-      className={`dropzone${canBeDropped ? ' _highlight' : ''}${readyToDrop ? ' _ready' : ''} ${className || ''}`}
+      className={setlassNames([
+        className,
+        'dropzone',
+        canBeDropped ? '_highlight' : '',
+        readyToDrop ? ' _ready' : '',
+      ])}
       onDragEnter={(e: React.DragEvent<HTMLDivElement>) => {
         e && e.preventDefault()
         dragEnterHandler(onDragEnter)
