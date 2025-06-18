@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDropContainer } from '../provider/DragAndDrop'
 
-interface DropContainerProps {
+interface DroppableProps {
   className?: string
   dropId: string
   droppableTypes?: string[]
@@ -17,7 +17,7 @@ interface DropContainerProps {
   [key: string]: any // Allow additional props
 }
 
-export default function DropContainer({
+export default function Droppable({
   className,
   dropId,
   droppableTypes,
@@ -27,7 +27,7 @@ export default function DropContainer({
   onDrop,
   children,
   ...props
-}: DropContainerProps) {
+}: DroppableProps) {
   const droppableContainer = {
     id: dropId,
     types: droppableTypes || [],

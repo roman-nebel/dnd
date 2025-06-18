@@ -1,5 +1,5 @@
 import './DragArea.css'
-import DropContainer from '../../src/components/DropContainer'
+import Droppable from '../../src/components/Droppable'
 
 export default function DragArea1({
   children,
@@ -19,12 +19,8 @@ export default function DragArea1({
   }
 
   return (
-    <DropContainer
-      dropId={dropId}
-      droppableTypes={['goal']}
-      onDrop={dropHandler}
-    >
+    <Droppable dropId={dropId} droppableTypes={['goal']} onDrop={dropHandler}>
       {children}
-    </DropContainer>
+    </Droppable>
   )
 }

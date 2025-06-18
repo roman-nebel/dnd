@@ -1,8 +1,8 @@
-import DragElement from '../../src/components/DragElement'
+import Draggable from '../../src/components/Draggable'
 
 export default function DragElement1({ id, dragId }: any) {
   return (
-    <DragElement
+    <Draggable
       id={id}
       dragId={dragId || id}
       dragType="goal"
@@ -14,6 +14,6 @@ export default function DragElement1({ id, dragId }: any) {
       }}
     >
       Drag me!
-    </DragElement>
+    </Draggable>
   )
 }

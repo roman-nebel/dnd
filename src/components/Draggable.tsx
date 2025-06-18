@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDragElement } from '../provider/DragAndDrop'
 
-interface DragElementProps {
+interface DraggableProps {
   className?: string
   id?: string
   dragId: string
@@ -11,7 +11,7 @@ interface DragElementProps {
   [key: string]: any // Allow additional props
 }
 
-export default function DragElement({
+export default function Draggable({
   className,
   id,
   dragId,
@@ -19,7 +19,7 @@ export default function DragElement({
   onDragStart,
   children,
   ...props
-}: DragElementProps) {
+}: DraggableProps) {
   const { dragStartHandler, dragRef } = useDragElement({
     id: dragId,
     type: dragType,
