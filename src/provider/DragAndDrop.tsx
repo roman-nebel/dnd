@@ -137,10 +137,10 @@ export function useDropContainer({
   }
 
   function dropHandler(onDrop?: () => void) {
-    console.log('dropHandler', onDrop)
-    if (!dragElement || !state.canBeDropped) return
-    onDrop && onDrop()
-    //showElement(dragElement.ref)
+    if (dragElement && state.canBeDropped) {
+      onDrop && onDrop()
+      //showElement(dragElement.ref)
+    }
     updateData({ dragElement: null, dragContainer: null, dropContainer: null })
   }
 
