@@ -35,14 +35,14 @@ export default function Droppable({
   const {
     canBeDropped,
     readyToDrop,
-    ref,
+    dropRef,
     dragEnterHandler,
     dropHandler,
     dragLeaveHandler,
   } = useDropContainer(droppableContainer)
   return (
     <div
-      ref={ref}
+      ref={dropRef}
       data-drop-id={dropId}
       className={`dropzone${canBeDropped ? ' _highlight' : ''}${readyToDrop ? ' _ready' : ''} ${className || ''}`}
       onDragEnter={(e: React.DragEvent<HTMLDivElement>) => {

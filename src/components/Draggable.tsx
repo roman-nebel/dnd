@@ -27,7 +27,7 @@ export default function Draggable({
 
   return (
     <div
-      ref={dragRef}
+      ref={dragRef} // Pass the ref directly to the DOM element
       data-drag-element-id={dragId}
       className={className}
       draggable={true}
