@@ -4,22 +4,18 @@ import Droppable from '../../src/components/Droppable'
 export default function DragArea1({
   children,
   dropId,
+  onDrop,
 }: {
   dropId: string
-  children?: React.ReactNode
-}) {
-  function dropHandler(
+  onDrop?: (
     canBeDropped: boolean,
     dragElementRef: any,
     dropContainerRef: any
-  ) {
-    if (canBeDropped && dragElementRef && dropContainerRef) {
-      dropContainerRef.appendChild(dragElementRef)
-    }
-  }
-
+  ) => void
+  children?: React.ReactNode
+}) {
   return (
-    <Droppable dropId={dropId} droppableTypes={['goal']} onDrop={dropHandler}>
+    <Droppable dropId={dropId} droppableTypes={['goal']} onDrop={onDrop}>
       {children}
     </Droppable>
   )

@@ -105,7 +105,7 @@ export function useDragElement({ id, type }: { id: string; type: string }) {
   const dragRef = useRef<HTMLDivElement | null>(null) // Ensure ref is properly typed
 
   function dragStartHandler() {
-    hideElement(dragRef.current)
+    //hideElement(dragRef.current)
 
     updateData({
       dragElement: { id, type, ref: dragRef.current }, // Pass the current
@@ -179,7 +179,7 @@ export function useDropContainer({
   ) {
     if (!dragElement || !state.canBeDropped) return
     onDrop && onDrop(state.canBeDropped, dragElement.ref, dropContainer?.ref)
-    showElement(dragElement.ref)
+    //showElement(dragElement.ref)
     updateData({ dragElement: null, dragContainer: null, dropContainer: null })
   }
 

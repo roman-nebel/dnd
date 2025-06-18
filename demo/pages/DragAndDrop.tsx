@@ -11,6 +11,33 @@ export default function DragAndDrop() {
     area3: [],
   })
   const { dragElement, dragContainer, dropContainer } = useDragAndDrop()
+
+  function dropHandler(
+    canBeDropped: boolean,
+    dragElementRef: any,
+    dropContainerRef: any
+  ) {
+    if (canBeDropped && dragElementRef && dropContainerRef) {
+      setState((prevState) => {
+        console.log(dragElementRef.dataset, dropContainerRef.dataset)
+        const newState = { ...prevState }
+        const dragId = dragElementRef.dataset.dragId
+        const dropId = dropContainerRef.dataset.dropId
+
+        // Remove the element from its current area
+        for (const area in newState) {
+          newState[area] = newState[area].filter((el) => el !== dragId)
+        }
+
+        // Add the element to the new area
+        if (newState[dropId]) {
+          newState[dropId].push(dragId)
+        }
+        console.log(newState)
+        return newState
+      })
+    }
+  }
   return (
     <div>
       <h1>Drag and Drop Example</h1>
@@ -26,7 +53,7 @@ export default function DragAndDrop() {
         return (
           <div key={areaId} className="drag-area">
             <h2>{areaId}</h2>
-            <DragArea1 dropId={areaId}>
+            <DragArea1 dropId={areaId} onDrop={dropHandler}>
               {state[areaId].map((el) => (
                 <DragElement1 key={el} dragId={el} />
               ))}
