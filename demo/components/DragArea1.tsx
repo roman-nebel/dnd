@@ -7,15 +7,16 @@ export default function DragArea1({
   onDrop,
 }: {
   dropId: string
-  onDrop?: (
-    canBeDropped: boolean,
-    dragElementRef: any,
-    dropContainerRef: any
-  ) => void
+  onDrop?: () => void
   children?: React.ReactNode
 }) {
+  function handleDrop() {
+    if (onDrop) {
+      onDrop()
+    }
+  }
   return (
-    <Droppable dropId={dropId} droppableTypes={['goal']} onDrop={onDrop}>
+    <Droppable dropId={dropId} handlers={{ onDrop: handleDrop, goal: {} }}>
       {children}
     </Droppable>
   )

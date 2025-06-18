@@ -2,18 +2,24 @@ import React from 'react'
 import { useDropContainer } from '../provider/DragAndDrop'
 import setlassNames from '../utils/classNames'
 
+type BaseHandlers = {
+  onDragEnter?: () => void
+  onDragLeave?: () => void
+  onDragOver?: () => void
+  onDragEnd?: () => void
+  onDrop?: () => void
+}
+
+type TypeSpecificHandlers = {
+  [key: string]: BaseHandlers
+}
+
+type Handlers = BaseHandlers & TypeSpecificHandlers
+
 interface DroppableProps {
   className?: string | null
   dropId: string
-  droppableTypes?: string[]
-  onDragEnter?: () => void
-  onDragLeave?: () => void
-  onDragEnd?: () => void
-  onDrop?: (
-    canBeDropped: boolean,
-    dragElementRef: any,
-    dropElementRef: any
-  ) => void
+  handlers?: Handlers | any
   children?: React.ReactNode
   [key: string]: any
 }
@@ -21,18 +27,26 @@ interface DroppableProps {
 export default function Droppable({
   className = null,
   dropId,
-  droppableTypes,
-  onDragEnter,
-  onDragLeave,
-  onDragEnd,
-  onDrop,
+  handlers = {},
   children,
   ...props
 }: DroppableProps) {
+  const droppableTypes =
+    Object.keys(handlers).filter((key) => {
+      const value = handlers[key]
+      return (
+        typeof value === 'object' &&
+        value !== null &&
+        typeof value !== 'function'
+      )
+    }) || []
   const droppableContainer = {
     id: dropId,
     types: droppableTypes || [],
   }
+
+  const { onDragEnter, onDragLeave, onDragOver, onDragEnd, onDrop } = handlers
+
   const {
     canBeDropped,
     readyToDrop,
@@ -48,7 +62,7 @@ export default function Droppable({
       className={setlassNames([
         className,
         'droppable',
-        canBeDropped ? '_available' : '_unavailable',
+        canBeDropped ? '_available' : '',
         readyToDrop ? '_ready' : '',
       ])}
       onDragEnter={(e: React.DragEvent<HTMLDivElement>) => {
@@ -70,6 +84,7 @@ export default function Droppable({
         e && e.preventDefault()
         dropHandler(onDrop)
       }}
+      {...props}
     >
       {children}
     </div>
