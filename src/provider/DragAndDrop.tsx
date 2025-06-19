@@ -70,8 +70,6 @@ export function useDragElement({ id, type }: { id: string; type: string }) {
   const dragRef = useRef<HTMLDivElement | null>(null)
 
   function defaultDragStartHandler() {
-    //hideElement(dragRef.current)
-
     updateData({
       dragElement: { id, type, ref: dragRef.current },
     })
