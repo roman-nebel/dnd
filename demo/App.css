@@ -44,10 +44,3 @@ main[id='home'] > .container {
 .enterRoom_widget > span {
   text-align: center;
 }
-
-.draggable {
-  cursor: 'grab';
-  transition: 'opacity 200ms ease';
-  background-color: '#f0f0f0';
-  user-select: 'none';
-}

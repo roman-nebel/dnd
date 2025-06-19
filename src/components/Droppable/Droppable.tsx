@@ -1,6 +1,8 @@
 import React from 'react'
-import { useDragAndDrop, usetargetContainer } from '../provider/DragAndDrop'
-import setClassNames from '../utils/classNames'
+import { useDragAndDrop, usetargetContainer } from '../../provider/DragAndDrop'
+import setClassNames from '../../utils/classNames'
+
+import './Droppable.scss'
 
 type BaseHandlers = {
   onDragEnter?: () => void

@@ -1,6 +1,8 @@
 import React from 'react'
-import { useDragElement } from '../provider/DragAndDrop'
-import setClassNames from '../utils/classNames'
+import { useDragElement } from '../../provider/DragAndDrop'
+import setClassNames from '../../utils/classNames'
+
+import './Draggable.scss'
 
 interface DraggableProps {
   className?: string | null

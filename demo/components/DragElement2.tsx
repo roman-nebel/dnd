@@ -1,18 +1,8 @@
-import Draggable from '../../src/components/Draggable'
+import { Draggable } from '../../src/components'
 
-export default function DragElement2({ id, dragId, children }: any) {
+export default function DragElement2({ dragId, children, ...props }: any) {
   return (
-    <Draggable
-      id={id}
-      dragId={dragId || id}
-      dragType="goal2"
-      style={{
-        cursor: 'grab',
-        transition: 'opacity 200ms ease',
-        backgroundColor: '#f0f0f0',
-        userSelect: 'none',
-      }}
-    >
+    <Draggable dragId={dragId} dragType="goal2" {...props}>
       {children}
     </Draggable>
   )

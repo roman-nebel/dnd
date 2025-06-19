@@ -1,5 +1,4 @@
-import './DragArea.css'
-import Droppable from '../../src/components/Droppable'
+import { Droppable } from '../../src/components'
 
 export default function DragArea1({
   children,
