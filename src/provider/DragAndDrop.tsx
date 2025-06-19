@@ -12,10 +12,9 @@ type DragBaseElement = {
 }
 
 type DragElement = DragBaseElement & { type: string; ref?: any }
-type SourceContainer = DragBaseElement & { availableActions?: string[] }
+type SourceContainer = DragBaseElement
 type TargetContainer = DragBaseElement & {
   types: string[]
-  availableActions?: string[]
   ref?: any
 }
 
