@@ -1,5 +1,5 @@
 import React from 'react'
-import { useDropContainer } from '../provider/DragAndDrop'
+import { useDragAndDrop, useDropContainer } from '../provider/DragAndDrop'
 import setlassNames from '../utils/classNames'
 
 type BaseHandlers = {
@@ -47,6 +47,7 @@ export default function Droppable({
 
   const { onDragEnter, onDragLeave, onDragOver, onDragEnd, onDrop } = handlers
 
+  const { dragElement } = useDragAndDrop()
   const {
     canBeDropped,
     readyToDrop,
@@ -67,14 +68,17 @@ export default function Droppable({
       ])}
       onDragEnter={(e: React.DragEvent<HTMLDivElement>) => {
         e && e.preventDefault()
-        dragEnterHandler(onDragEnter)
+        dragEnterHandler()
+        onDragEnter && onDragEnter()
       }}
       onDragOver={(e: React.DragEvent<HTMLDivElement>) => {
         e && e.preventDefault()
+        onDragOver && onDragOver()
       }}
       onDragLeave={(e: React.DragEvent<HTMLDivElement>) => {
         e && e.preventDefault()
-        dragLeaveHandler(onDragLeave)
+        dragLeaveHandler()
+        onDragLeave && onDragLeave()
       }}
       onDragEnd={(e: React.DragEvent<HTMLDivElement>) => {
         e && e.preventDefault()
@@ -82,7 +86,8 @@ export default function Droppable({
       }}
       onDrop={(e: React.DragEvent<HTMLDivElement>) => {
         e && e.preventDefault()
-        dropHandler(onDrop)
+        dropHandler()
+        if (dragElement && canBeDropped) onDrop && onDrop()
       }}
       {...props}
     >
