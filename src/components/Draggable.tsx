@@ -21,7 +21,7 @@ export default function Draggable({
   children,
   ...props
 }: DraggableProps) {
-  const { dragStartHandler, dragRef } = useDragElement({
+  const { defaultDragStartHandler, dragRef } = useDragElement({
     id: dragId,
     type: dragType,
   })
@@ -34,7 +34,7 @@ export default function Draggable({
       draggable={true}
       onDragStart={(e) => {
         onDragStart && onDragStart(e)
-        dragStartHandler()
+        defaultDragStartHandler()
       }}
       {...props}
     >

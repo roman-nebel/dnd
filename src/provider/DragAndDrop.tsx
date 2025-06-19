@@ -69,7 +69,7 @@ export function useDragElement({ id, type }: { id: string; type: string }) {
   const { updateData } = useDragAndDrop()
   const dragRef = useRef<HTMLDivElement | null>(null)
 
-  function dragStartHandler() {
+  function defaultDragStartHandler() {
     //hideElement(dragRef.current)
 
     updateData({
@@ -78,7 +78,7 @@ export function useDragElement({ id, type }: { id: string; type: string }) {
   }
 
   return {
-    dragStartHandler,
+    defaultDragStartHandler,
     dragRef: dragRef,
   }
 }
@@ -121,7 +121,7 @@ export function useDropContainer({
     updateState({ readyToDrop })
   }, [dragElement, dropContainer])
 
-  function dragEnterHandler() {
+  function defaultDragEnterHandler() {
     setTimeout(() => {
       updateData({
         dropContainer: { id, types, ref: dropRef.current },
@@ -129,19 +129,19 @@ export function useDropContainer({
     }, 16)
   }
 
-  function dragLeaveHandler() {
+  function defaultDragLeaveHandler() {
     updateData({ dropContainer: null })
   }
 
-  function dropHandler() {
+  function defaultDropHandler() {
     updateData({ dragElement: null, dragContainer: null, dropContainer: null })
   }
 
   return {
     ...state,
     dropRef,
-    dragEnterHandler,
-    dragLeaveHandler,
-    dropHandler,
+    defaultDragEnterHandler,
+    defaultDragLeaveHandler,
+    defaultDropHandler,
   }
 }

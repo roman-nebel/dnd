@@ -52,9 +52,9 @@ export default function Droppable({
     canBeDropped,
     readyToDrop,
     dropRef,
-    dragEnterHandler,
-    dropHandler,
-    dragLeaveHandler,
+    defaultDragEnterHandler,
+    defaultDropHandler,
+    defaultDragLeaveHandler,
   } = useDropContainer(droppableContainer)
   return (
     <div
@@ -68,7 +68,7 @@ export default function Droppable({
       ])}
       onDragEnter={(e: React.DragEvent<HTMLDivElement>) => {
         e && e.preventDefault()
-        dragEnterHandler()
+        defaultDragEnterHandler()
         onDragEnter && onDragEnter()
       }}
       onDragOver={(e: React.DragEvent<HTMLDivElement>) => {
@@ -77,7 +77,7 @@ export default function Droppable({
       }}
       onDragLeave={(e: React.DragEvent<HTMLDivElement>) => {
         e && e.preventDefault()
-        dragLeaveHandler()
+        defaultDragLeaveHandler()
         onDragLeave && onDragLeave()
       }}
       onDragEnd={(e: React.DragEvent<HTMLDivElement>) => {
@@ -86,7 +86,7 @@ export default function Droppable({
       }}
       onDrop={(e: React.DragEvent<HTMLDivElement>) => {
         e && e.preventDefault()
-        dropHandler()
+        defaultDropHandler()
         if (dragElement && canBeDropped) onDrop && onDrop()
       }}
       {...props}
