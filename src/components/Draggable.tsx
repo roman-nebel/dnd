@@ -7,14 +7,13 @@ interface DraggableProps {
   id?: string
   dragId: string
   dragType: string
-  onDragStart?: (event: React.DragEvent<HTMLDivElement>) => void
+  onDragStart?: (dragContainerRef: HTMLDivElement | null) => void
   children: React.ReactNode
   [key: string]: any
 }
 
 export default function Draggable({
   className = null,
-  id,
   dragId,
   dragType,
   onDragStart,
@@ -32,8 +31,8 @@ export default function Draggable({
       className={setClassNames([className, 'draggable'])}
       data-drag-id={dragId}
       draggable={true}
-      onDragStart={(e) => {
-        onDragStart && onDragStart(e)
+      onDragStart={(e: React.DragEvent<HTMLDivElement>) => {
+        onDragStart && onDragStart(dragRef.current)
         defaultDragStartHandler()
       }}
       {...props}
