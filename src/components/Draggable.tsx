@@ -7,7 +7,7 @@ interface DraggableProps {
   id?: string
   dragId: string
   dragType: string
-  onDragStart?: (dragContainerRef: HTMLDivElement | null) => void
+  onDragStart?: (sourceContainerRef: HTMLDivElement | null) => void
   children: React.ReactNode
   [key: string]: any
 }

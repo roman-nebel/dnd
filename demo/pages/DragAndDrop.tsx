@@ -20,14 +20,14 @@ const initialState = {
 
 export default function DragAndDrop() {
   const [state, setState] = useState(initialState)
-  const { dragElement, dragContainer, dropContainer } = useDragAndDrop()
+  const { dragElement, sourceContainer, targetContainer } = useDragAndDrop()
 
   function dropHandler() {
-    if (dragElement?.ref && dropContainer?.ref) {
+    if (dragElement?.ref && targetContainer?.ref) {
       setState((prevState) => {
         const newState = { ...prevState }
         const dragId = dragElement?.ref.dataset.dragId
-        const dropId = dropContainer?.ref.dataset.dropId
+        const dropId = targetContainer?.ref.dataset.dropId
 
         for (const area in newState) {
           newState[area] = newState[area].filter((el) => el.id !== dragId)
@@ -49,9 +49,9 @@ export default function DragAndDrop() {
       <p>
         Drag and drop functionality will be implemented here.{' '}
         <i>
-          ({dragContainer?.id || 'No source'} –{' '}
+          ({sourceContainer?.id || 'No source'} –{' '}
           {dragElement?.id || 'None dragging'} –{' '}
-          {dropContainer?.id || 'No target'})
+          {targetContainer?.id || 'No target'})
         </i>
       </p>
       <div key={'area1'} className="drag-area">

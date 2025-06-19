@@ -1,5 +1,5 @@
 import React from 'react'
-import { useDragAndDrop, useDropContainer } from '../provider/DragAndDrop'
+import { useDragAndDrop, usetargetContainer } from '../provider/DragAndDrop'
 import setClassNames from '../utils/classNames'
 
 type BaseHandlers = {
@@ -55,7 +55,7 @@ export default function Droppable({
     defaultDragEnterHandler,
     defaultDropHandler,
     defaultDragLeaveHandler,
-  } = useDropContainer(droppableContainer)
+  } = usetargetContainer(droppableContainer)
   return (
     <div
       ref={dropRef}

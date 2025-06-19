@@ -12,8 +12,8 @@ type DragBaseElement = {
 }
 
 type DragElement = DragBaseElement & { type: string; ref?: any }
-type DragContainer = DragBaseElement & { availableActions?: string[] }
-type DropContainer = DragBaseElement & {
+type SourceContainer = DragBaseElement & { availableActions?: string[] }
+type TargetContainer = DragBaseElement & {
   types: string[]
   availableActions?: string[]
   ref?: any
@@ -21,8 +21,8 @@ type DropContainer = DragBaseElement & {
 
 interface DragAndDropContextType {
   dragElement: DragElement | null
-  dragContainer: DragContainer | null
-  dropContainer: DropContainer | null
+  sourceContainer: SourceContainer | null
+  targetContainer: TargetContainer | null
   updateData: (newData: Partial<DragAndDropContextType>) => void
 }
 
@@ -81,7 +81,7 @@ export function useDragElement({ id, type }: { id: string; type: string }) {
   }
 }
 
-export function useDropContainer({
+export function usetargetContainer({
   id,
   types,
 }: {
@@ -92,7 +92,7 @@ export function useDropContainer({
     canBeDropped: false,
     readyToDrop: false,
   })
-  const { dragElement, dropContainer, updateData } = useDragAndDrop()
+  const { dragElement, targetContainer, updateData } = useDragAndDrop()
   const dropRef = useRef<HTMLDivElement>(null)
 
   function updateState(newState: any) {
@@ -114,25 +114,29 @@ export function useDropContainer({
     const readyToDrop = Boolean(
       dragElement?.type &&
         types.includes(dragElement?.type) &&
-        dropContainer?.id === id
+        targetContainer?.id === id
     )
     updateState({ readyToDrop })
-  }, [dragElement, dropContainer])
+  }, [dragElement, targetContainer])
 
   function defaultDragEnterHandler() {
     setTimeout(() => {
       updateData({
-        dropContainer: { id, types, ref: dropRef.current },
+        targetContainer: { id, types, ref: dropRef.current },
       })
     }, 16)
   }
 
   function defaultDragLeaveHandler() {
-    updateData({ dropContainer: null })
+    updateData({ targetContainer: null })
   }
 
   function defaultDropHandler() {
-    updateData({ dragElement: null, dragContainer: null, dropContainer: null })
+    updateData({
+      dragElement: null,
+      sourceContainer: null,
+      targetContainer: null,
+    })
   }
 
   return {
