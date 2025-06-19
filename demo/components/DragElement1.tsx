@@ -1,17 +1,18 @@
 import Draggable from '../../src/components/Draggable'
+import setClassNames from '../../src/utils/classNames'
 
-export default function DragElement1({ id, dragId, children }: any) {
+export default function DragElement1({
+  className,
+  dragId,
+  children,
+  ...props
+}: any) {
   return (
     <Draggable
-      id={id}
-      dragId={dragId || id}
+      className={setClassNames([className, 'draggable'])}
+      dragId={dragId}
       dragType="goal"
-      style={{
-        cursor: 'grab',
-        transition: 'opacity 200ms ease',
-        backgroundColor: '#f0f0f0',
-        userSelect: 'none',
-      }}
+      {...props}
     >
       {children}
     </Draggable>

@@ -7,7 +7,7 @@ main {
   justify-content: center;
 }
 
-main[id="home"] > .container {
+main[id='home'] > .container {
   width: 100vw;
   max-width: 1280px;
 }
@@ -43,4 +43,11 @@ main[id="home"] > .container {
 
 .enterRoom_widget > span {
   text-align: center;
+}
+
+.draggable {
+  cursor: 'grab';
+  transition: 'opacity 200ms ease';
+  background-color: '#f0f0f0';
+  user-select: 'none';
 }
