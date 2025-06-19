@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDragAndDrop, useDropContainer } from '../provider/DragAndDrop'
-import setlassNames from '../utils/classNames'
+import setClassNames from '../utils/classNames'
 
 type BaseHandlers = {
   onDragEnter?: () => void
@@ -60,7 +60,7 @@ export default function Droppable({
     <div
       ref={dropRef}
       data-drop-id={dropId}
-      className={setlassNames([
+      className={setClassNames([
         className,
         'droppable',
         canBeDropped ? '_available' : '',

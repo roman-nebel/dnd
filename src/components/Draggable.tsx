@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDragElement } from '../provider/DragAndDrop'
-import setlassNames from '../utils/classNames'
+import setClassNames from '../utils/classNames'
 
 interface DraggableProps {
   className?: string | null
@@ -29,7 +29,7 @@ export default function Draggable({
   return (
     <div
       ref={dragRef}
-      className={setlassNames([className, 'draggable'])}
+      className={setClassNames([className, 'draggable'])}
       data-drag-id={dragId}
       draggable={true}
       onDragStart={(e) => {
