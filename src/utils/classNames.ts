@@ -31,15 +31,3 @@ export function removeClassNames(
   const toRemove = setClassNames(classNamesToRemove).split(' ')
   return existing.filter((name) => !toRemove.includes(name)).join(' ')
 }
-
-export function getDroppableClassNames(
-  canBeDropped: boolean,
-  readyToDrop: boolean,
-  classNames?: string | string[]
-): string {
-  const baseClass = classNames ? setClassNames(classNames) : ''
-  const droppableClass = canBeDropped ? 'can-be-dropped' : 'cannot-be-dropped'
-  const readyClass = readyToDrop ? 'ready-to-drop' : 'not-ready-to-drop'
-
-  return addClassNames(baseClass, [droppableClass, readyClass])
-}
