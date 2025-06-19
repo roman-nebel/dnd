@@ -1,4 +1,3 @@
-import './App.css'
 import DragAndDrop from './pages/DragAndDrop'
 import { DragAndDropProvider } from '../src/provider/DragAndDrop'
 
