@@ -68,26 +68,26 @@ export default function Droppable({
       ])}
       onDragEnter={(e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault()
-        onDragEnter && onDragEnter(dragElement)
+        onDragEnter && onDragEnter(e, dragElement)
         defaultDragEnterHandler()
       }}
       onDragOver={(e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault()
-        onDragOver && onDragOver(dragElement)
+        onDragOver && onDragOver(e, dragElement)
       }}
       onDragLeave={(e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault()
-        onDragLeave && onDragLeave(dragElement)
+        onDragLeave && onDragLeave(e, dragElement)
         defaultDragLeaveHandler()
       }}
       onDragEnd={(e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault()
-        onDragEnd && onDragEnd(dragElement?.ref, dropRef?.current)
+        onDragEnd && onDragEnd(e, dragElement?.ref, dropRef?.current)
       }}
       onDrop={(e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault()
         if (dragElement && canBeDropped)
-          onDrop && onDrop(dragElement?.ref, dropRef?.current)
+          onDrop && onDrop(e, dragElement?.ref, dropRef?.current)
         defaultDropHandler()
       }}
       {...props}
