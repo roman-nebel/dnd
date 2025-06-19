@@ -1,4 +1,4 @@
-export default function setlassNames(
+export default function setClassNames(
   classNames: string | (string | null)[]
 ): string {
   if (typeof classNames === 'string') {
@@ -18,8 +18,8 @@ export function addClassNames(
   existingClassNames: string | string[],
   newClassNames: string | string[]
 ): string {
-  const existing = setlassNames(existingClassNames)
-  const additional = setlassNames(newClassNames)
+  const existing = setClassNames(existingClassNames)
+  const additional = setClassNames(newClassNames)
   return existing ? `${existing} ${additional}` : additional
 }
 
@@ -27,8 +27,8 @@ export function removeClassNames(
   existingClassNames: string | string[],
   classNamesToRemove: string | string[]
 ): string {
-  const existing = setlassNames(existingClassNames).split(' ')
-  const toRemove = setlassNames(classNamesToRemove).split(' ')
+  const existing = setClassNames(existingClassNames).split(' ')
+  const toRemove = setClassNames(classNamesToRemove).split(' ')
   return existing.filter((name) => !toRemove.includes(name)).join(' ')
 }
 
@@ -37,7 +37,7 @@ export function getDroppableClassNames(
   readyToDrop: boolean,
   classNames?: string | string[]
 ): string {
-  const baseClass = classNames ? setlassNames(classNames) : ''
+  const baseClass = classNames ? setClassNames(classNames) : ''
   const droppableClass = canBeDropped ? 'can-be-dropped' : 'cannot-be-dropped'
   const readyClass = readyToDrop ? 'ready-to-drop' : 'not-ready-to-drop'
 
